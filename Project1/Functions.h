@@ -29,7 +29,6 @@ static Fl_RGB_Image* FinImage = (Fl_RGB_Image*)0;
 static cv::Mat* tmpImg = new cv::Mat();
 static cv::Mat* outImg = new cv::Mat();
 static unsigned char* tmpImgBuffer = (unsigned char*)0;
-//static unsigned char* imgBuffer = new unsigned char[maxNum]; //UNUSED
 static std::string FileName;
 
 //DECLARE IMG BOX DIMENSIONS
@@ -40,10 +39,10 @@ static short newWidth = maxWidth, newHeight = maxHeight;
 
 //DIRECTORY TREE VARS
 static const short dirTreeMaxItemCount = 20;
-static std::vector<std::string> dirTreeFileNames;
-static std::string* dirTreeFileNamesList = new std::string[dirTreeMaxItemCount];
-static unsigned char DTNLstCap = 0;
-static StringList* dirStringList= new StringList(dirTreeMaxItemCount);
+//static std::vector<std::string> dirTreeFileNames;
+//static std::string* dirTreeFileNamesList = new std::string[dirTreeMaxItemCount];
+//static unsigned char DTNLstCap = 0;
+static StringList* dirStringList = new StringList(dirTreeMaxItemCount);
 
 #pragma endregion
 
@@ -76,10 +75,6 @@ static void resizeImage(cv::Mat* img) {
 	cv::resize(*img, a, cv::Size(newWidth, newHeight));
 
 	*img = a;
-}
-
-static void changeImgData() {
-
 }
 
 static void calcPre_MedianFiltr() {
@@ -216,6 +211,30 @@ static void drawImage2(Fl_Box* imgFrame) {
 //	void operator()() const { switchVisibility(chkBtn); }
 //	
 //} f;
+
+////CHECK IF A NEW TREE ITEM CAN BE ADDED
+//static bool canAddTreeItem() {
+//	//bool canBeContained = dirTreeFileNames.capacity() < dirTreeMaxItemCount;
+//	bool canBeContained = DTNLstCap < dirTreeMaxItemCount;
+//	bool out = false;
+//	if (canBeContained) {
+//		/*for (auto i = 0; i < (short)dirTreeFileNames.capacity() - 1; i++)
+//		{
+//			if (dirTreeFileNames.at(i) == FileName)
+//				return false;
+//		}*/
+//		for (auto i = 0; i < DTNLstCap; i++)
+//		{
+//			if (dirTreeFileNamesList[DTNLstCap] == FileName)
+//				return false;
+//		}
+//		//IF LOOP FINISHED AND DID NOT FOUND ANY MATCHES
+//		return true;
+//	}
+//	//CANNOT BE CONTAINED
+//	return false;
+//}
+
 #pragma endregion
 
 #pragma region CallBackFunctions
@@ -272,63 +291,74 @@ static void drawInitialImage() {
 	//window->redraw();
 }
 
+static void clearImgViews() {
+	box_jpeg_image->image((Fl_RGB_Image*)0);
+	box_jpeg_image2->image((Fl_RGB_Image*)0);
+	FileName = ""; drawInitialImage();
+	window->redraw();
+}
+
 static void addTreeItem() {
 	auto found = FileName.find_last_of("/\\");
 	auto name = FileName.substr(found + 1);
 	auto path = FileName.substr(0, found);
 	auto lastFolder = path.substr(path.find_last_of("/\\") + 1);
-	auto trPrefs = new Fl_Tree_Prefs();
 
-	//dirTreeFileNames.push_back(FileName); //add to the struct base
-	dirTreeFileNamesList[DTNLstCap] = FileName;
 
-	auto treeItem = new Fl_Tree_Item(Fl_Tree_Prefs()), pTreeItem = new Fl_Tree_Item(Fl_Tree_Prefs());
+	auto FilenamePtr = dirStringList->add(FileName);
 
-	pTreeItem->label(lastFolder.c_str());
-
+	auto treeItem = new Fl_Tree_Item(Fl_Tree_Prefs());
 	treeItem->label(name.c_str());
-	//treeItem->user_data(&dirTreeFileNames.back()); //add to the treeItem the ptr addr
-	treeItem->user_data(&dirTreeFileNamesList[DTNLstCap]); //add to the treeItem the ptr addr
-	DTNLstCap++;
+	treeItem->user_data(FilenamePtr); //add to the treeItem the ptr addr
 
-	//treeItem->parent(pTreeItem);
-
-	//dirTree->add(pTreeItem, lastFolder.c_str()); //dirTree->add((lastFolder + '/' + name).c_str());
+	dirTree->deselect_all();
 	dirTree->add(lastFolder.c_str());
-	dirTree->add(lastFolder.c_str(), treeItem);
+	dirTree->add(lastFolder.c_str(), treeItem)->select();
 
 }
 
-static bool isDirTreeFocused() {
-	auto a = dirTree->get_item_focus();
-	bool isfocused = a != NULL;
-	return isfocused;
+static void drawSelImg() {
+	auto selItem = dirTree->first_selected_item();
+	FileName = ((std::string*)selItem->user_data())[0];
+	drawInitialImage();
+}
+
+static bool isDirTreeSelected() {
+	return dirTree->first_selected_item() != NULL;
 }
 
 static void removeFileEntry() {
-	if (isDirTreeFocused()) {
-		auto a = dirTree->get_item_focus();
-		auto parent = a->parent();
 
-		if (a != dirTree->root()) {
-			dirTree->remove(a);
-			if (parent->children() == 0 && dirTree->root() != parent) dirTree->remove(parent);
+	if (isDirTreeSelected()) {
+		auto selItem = dirTree->first_selected_item();
+
+		bool isRoot = selItem == dirTree->root();
+		if (!isRoot) {
+			auto parent = selItem->parent();
+			bool hasRootParent = parent == dirTree->root();
+
+			selItem->prev()->select();
+			//dirTree->prev(selItem)->select();
+			if (!hasRootParent) dirStringList->remove(*(std::string*)selItem->user_data()); //Remove from the fileName List
+			dirTree->remove(selItem); //Remove from the FlTree
+
+			if (parent->children() == 0 && !hasRootParent) dirTree->remove(parent); //Remove parent if empty and not root
+
 		}
-		
-		dirTree->redraw();
+
+		clearImgViews();
+		if (isDirTreeSelected()) drawSelImg();
 	}
 }
+
 static void loadImgFromTree(Fl_Widget* w, void* data) {
 	auto tree = (Fl_Tree*)w;
 	switch (tree->callback_reason()) {
 		case FL_TREE_REASON_SELECTED:
-			auto item = (Fl_Tree_Item*)tree->callback_item();    // get selected item
-			if (item->children() == 0 && item!= dirTree->root()) {
-				//auto ptr = dirTree->get_item_focus()->user_data();
-				auto ptr = item->user_data();
-				auto filenamePTR = (std::string*)ptr;
-
-				FileName = filenamePTR->c_str();
+			auto item = (Fl_Tree_Item*)tree->callback_item(); // get selected item
+			bool isRoot = item == dirTree->root();
+			if (!isRoot && item->parent()->parent() == dirTree->root()) {
+				FileName = ((std::string*)item->user_data())[0];
 				drawInitialImage();
 			}
 	}
@@ -336,28 +366,6 @@ static void loadImgFromTree(Fl_Widget* w, void* data) {
 
 
 	}*/
-}
-//CHECK IF A NEW TREE ITEM CAN BE ADDED
-static bool canAddTreeItem() {
-	//bool canBeContained = dirTreeFileNames.capacity() < dirTreeMaxItemCount;
-	bool canBeContained = DTNLstCap < dirTreeMaxItemCount;
-	bool out = false;
-	if (canBeContained) {
-		/*for (auto i = 0; i < (short)dirTreeFileNames.capacity() - 1; i++)
-		{
-			if (dirTreeFileNames.at(i) == FileName)
-				return false;
-		}*/
-		for (auto i = 0; i < DTNLstCap; i++)
-		{
-			if (dirTreeFileNamesList[DTNLstCap] == FileName)
-				return false;
-		}
-		//IF LOOP FINISHED AND DID NOT FOUND ANY MATCHES
-		return true;
-	}
-	//CANNOT BE CONTAINED
-	return false;
 }
 
 static void chooseFile() {
@@ -369,7 +377,7 @@ static void chooseFile() {
 	Fl_Native_File_Chooser fnfc = *nativeFileChooser;
 	fnfc.title("Pick a file");
 	fnfc.type(Fl_Native_File_Chooser::BROWSE_FILE);
-	//fnfc.filter("Text\t*.txt\n""C Files\t*.{cxx,h,c}");
+	fnfc.filter("Images\t*.{png,tiff,svg,jpeg,jpg}");
 	fnfc.directory("/var/tmp");           // default directory to use
 	// Show native chooser
 	switch (fnfc.show()) {
@@ -379,7 +387,7 @@ static void chooseFile() {
 			printf("PICKED: %s\n", fnfc.filename());
 			FileName = fnfc.filename();
 
-			if (canAddTreeItem()) addTreeItem();
+			if (dirStringList->canBeAddedDistinct(FileName)) addTreeItem();
 
 			drawInitialImage();
 			break;  // FILE CHOSEN

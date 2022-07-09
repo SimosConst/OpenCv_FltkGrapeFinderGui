@@ -2,7 +2,7 @@
 
 struct StringList {
 	std::string* list;
-	u_char maxLength, currCap;
+	u_char maxLength, currCap=0;
 
 #pragma region staticFunctions
 
@@ -11,17 +11,25 @@ struct StringList {
 		sList->list = new std::string[sList->maxLength];
 	}
 
-	static u_char containsAt(StringList* sList, std::string a) {
+	static u_char find(StringList* sList, std::string str) {
 		for (u_char i = 0; i < sList->currCap; i++)
 		{
-			if (sList->list[i] == a)
+			if (sList->list[i] == str)
 				return i;
 		}
 		return sList->maxLength;
 	}
 
-	static bool canContainAt(StringList* sList, u_char a) {
-		return a < sList->maxLength;
+	static bool canContainAt(StringList* sList, u_char indx) {
+		return indx < sList->maxLength;
+	}
+
+	static bool canContainMore(StringList* sList) {
+		return canContainAt(sList, sList->currCap);
+	}
+
+	static bool canRemoveMore(StringList* sList) {
+		return sList->currCap > 0;
 	}
 
 #pragma endregion
@@ -32,34 +40,59 @@ public:
 		initList(this, max_length);
 	}
 
-	void add(std::string a) {
-		for (u_char i = 0; i < currCap; i++)
+	void* add(std::string str) {
+		for (u_char i = 0; i < maxLength; i++)
 		{
 			if (list[i] == "") {
-				list[currCap] = a;
+				list[i] = str;
 				currCap++;
+				return &list[i];
 			}
 		}
+		throw EXCEPTION_ARRAY_BOUNDS_EXCEEDED;
 	}
 
-	void remove(std::string a) {
+	void remove(std::string str) {
 		/*for (u_char i = 0; i < currCap; i++)
 		{
 			if (list[i] == a)
 				list[i] = "";
 		}*/
-		auto b = containsAt(this, a);
-		if (!b == maxLength) list[b] = "";
+		if (canRemoveMore(this)) {
+			auto b = find(this, str);
+			if (b < maxLength) {
+				list[b].clear();
+				currCap--;
+			}
+		}
 	}
 
-	void setAt(u_char indx, std::string a) {
+	void removeFromPtr(void* ptr) {
+		auto filenamePTR = (std::string*)ptr;
+		remove(filenamePTR->c_str());
+	}
+
+	void setAt(u_char indx, std::string str) {
 		if (canContainAt(this, indx))
-			list[indx] = a;
+			list[indx] = str;
+		else
+			throw EXCEPTION_ARRAY_BOUNDS_EXCEEDED;
 	}
 
 	void removeAt(u_char indx) {
-		setAt(indx, "");
+		if (canRemoveMore(this)) { setAt(indx, ""); currCap--; }
 	}
 
+	bool canContainMore() {
+		return canContainMore(this);
+	}
+
+	bool alreadyExsists(std::string str) {
+		return find(this, str) != maxLength;
+	}
+
+	bool canBeAddedDistinct(std::string str) {
+		return canContainMore() && !alreadyExsists(str);
+	}
 };
 
