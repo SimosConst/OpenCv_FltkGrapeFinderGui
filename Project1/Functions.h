@@ -5,6 +5,7 @@
 #define Funcs
 
 #pragma region static Variables
+#define loadingTxt "Loading Image..."
 
 //DECLARE WIDGETS
 static Fl_Double_Window* window = (Fl_Double_Window*)0;
@@ -12,14 +13,21 @@ static Fl_Native_File_Chooser* nativeFileChooser = (Fl_Native_File_Chooser*)0;
 static Fl_Box* box_jpeg_image2 = (Fl_Box*)0;
 static Fl_Box* box_jpeg_image = (Fl_Box*)0;
 static Fl_Button* btn_loadImg = (Fl_Button*)0;
-static Fl_Value_Slider* sld_Median_ksize = (Fl_Value_Slider*)0;
-static Fl_Check_Button* chk_Median_enable = (Fl_Check_Button*)0;
+static Fl_Value_Slider* sld_preMedian_ksize = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_postMedian_ksize = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_MorphOp_ksize2 = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_MorphOp_ksize1 = (Fl_Value_Slider*)0;
+static Fl_Check_Button* chk_preMedian_enable = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_postMedian_enable = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_MorphOp_enable2 = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_MorphOp_enable1 = (Fl_Check_Button*)0;
 static Fl_Tree* dirTree = (Fl_Tree*)0;
 
 //static Fl_Check_Button* tmp_chkBtn;
 
 static std::string tmp_groupName;
 static bool tmp_active;
+static const char* LoadingText = "Loading Image...";
 
 //DECLARE IMAGE DATA ARRAY BUFFER
 static bool newImg = true;
@@ -44,8 +52,32 @@ static const short dirTreeMaxItemCount = 20;
 //static unsigned char DTNLstCap = 0;
 static StringList* dirStringList = new StringList(dirTreeMaxItemCount);
 
-#pragma endregion
 
+//MENU ITEMS
+static Fl_Choice* drp_MorphOp_Shape2 = (Fl_Choice*)0;
+static Fl_Choice* drp_MorphOp_Shape1 = (Fl_Choice*)0;
+static Fl_Choice* drp_MorphOp_Op2 = (Fl_Choice*)0;
+static Fl_Choice* drp_MorphOp_Op1 = (Fl_Choice*)0;
+
+static Fl_Menu_Item menu_drp_MorphOp_Shape[] = {
+ {"Rectangle", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Cross", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Ellipse", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+static Fl_Menu_Item menu_drp_MorphOp_Op[] = {
+ {"Erode", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Dilate", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Open", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Close", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Gradient", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Tophat", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"Blackhat", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+#pragma endregion
 
 #pragma region HelperFunctions
 
@@ -77,8 +109,17 @@ static void resizeImage(cv::Mat* img) {
 	*img = a;
 }
 
-static void calcPre_MedianFiltr() {
-	cv::medianBlur(*tmpImg, *outImg, sld_Median_ksize->value());
+static void calc_MedianFiltr(Fl_Value_Slider* sld) {
+	cv::medianBlur(*outImg, *outImg, sld->value());
+}
+
+/*u_char op, u_char shape, size_t kSize, size_t iterations = 1*/
+static void calc_StructuralOp(Fl_Value_Slider* sld, Fl_Choice* drp1, Fl_Choice* drp2) {
+	int kSize = sld->value();
+	auto a = drp1->value();
+	auto b = drp2->value();
+	auto kernel = cv::getStructuringElement(a, cv::Size(kSize, kSize));
+	cv::morphologyEx(*outImg, *outImg, b, kernel);
 }
 
 static Fl_RGB_Image* Mat2FlRgbImg(cv::Mat mat, bool newImg = false) {
@@ -243,8 +284,10 @@ static void caseCalc() {
 	//RENEW IMG DATA WITH INITIAL
 	tmpImg->copyTo(*outImg);
 
-	if (chk_Median_enable->value())
-		calcPre_MedianFiltr();
+	if (chk_preMedian_enable->value()) calc_MedianFiltr(sld_preMedian_ksize);
+	if (chk_MorphOp_enable1->value()) calc_StructuralOp(sld_MorphOp_ksize1,drp_MorphOp_Shape1 ,drp_MorphOp_Op1);
+	if (chk_MorphOp_enable2->value()) calc_StructuralOp(sld_MorphOp_ksize2,drp_MorphOp_Shape2 ,drp_MorphOp_Op2);
+	if (chk_postMedian_enable->value()) calc_MedianFiltr(sld_postMedian_ksize);
 
 }
 
@@ -294,8 +337,30 @@ static void drawInitialImage() {
 static void clearImgViews() {
 	box_jpeg_image->image((Fl_RGB_Image*)0);
 	box_jpeg_image2->image((Fl_RGB_Image*)0);
-	FileName = ""; drawInitialImage();
+
+	//FileName = ""; drawInitialImage();
 	window->redraw();
+}
+
+/*
+toggle: true, start interval
+toggle: false, stop
+*/
+static void loadingInterval(bool toggle = false) {
+	auto a = box_jpeg_image->parent();
+	auto txt = toggle ? loadingTxt : NULL;
+	if (toggle) {
+	//	clearImgViews();
+	//	a->deactivate();
+		btn_loadImg->deactivate();
+	}
+	else {
+	//	a->activate();
+		btn_loadImg->activate();//REACTIVATE
+	}
+	box_jpeg_image->label(txt);
+	box_jpeg_image2->label(txt);
+	a->redraw();
 }
 
 static void addTreeItem() {
@@ -323,14 +388,23 @@ static void drawSelImg() {
 	drawInitialImage();
 }
 
-static bool isDirTreeSelected() {
-	return dirTree->first_selected_item() != NULL;
+//CHECK IF SPECIFIC LEVEL OF TREEITEM IS SELECTED
+//isFileName: true if the treeitem represents a filename
+static bool isDirTreeItemSelected(bool isFileName = false) {
+	auto selItem = dirTree->first_selected_item();
+	bool retVal = selItem != NULL;
+	if (retVal)
+		retVal = isFileName
+		? (selItem->parent() != dirTree->root()) && (selItem != dirTree->root())
+		: (selItem != dirTree->root());
+
+	return retVal;
 }
 
 static void removeFileEntry() {
-
-	if (isDirTreeSelected()) {
-		auto selItem = dirTree->first_selected_item();
+	//GET SELECTED ITEM
+	auto selItem = dirTree->first_selected_item();
+	if (isDirTreeItemSelected()) {
 
 		bool isRoot = selItem == dirTree->root();
 		if (!isRoot) {
@@ -345,9 +419,11 @@ static void removeFileEntry() {
 			if (parent->children() == 0 && !hasRootParent) dirTree->remove(parent); //Remove parent if empty and not root
 
 		}
+		
 
-		clearImgViews();
-		if (isDirTreeSelected()) drawSelImg();
+		if (isDirTreeItemSelected(true)) drawSelImg();
+		else {clearImgViews(); window->redraw(); }
+
 	}
 }
 
@@ -369,16 +445,17 @@ static void loadImgFromTree(Fl_Widget* w, void* data) {
 }
 
 static void chooseFile() {
-	//fileChooser->show();
-	auto filename = FileName == "" ? "C:\\Users\\GENERIC\\Pictures" : FileName.c_str();
-	//FileName = std::string(fl_file_chooser("hello", "", filename, 0));
-	//FileName = fl_file_chooser("hello", "", filename, 0);
+	//auto filename = FileName == "" ? "C:\\Users\\%USERNAME%\\Pictures" : FileName.c_str();
+	//DEACTIVATE TO PREVENT USER FROM DISRUPTING THE FOLLOWING OPERATIONS
+	//BY OPENING NEW FILECHOOSER
+	loadingInterval(true);
 
-	Fl_Native_File_Chooser fnfc = *nativeFileChooser;
+	auto fnfc = *nativeFileChooser;
 	fnfc.title("Pick a file");
 	fnfc.type(Fl_Native_File_Chooser::BROWSE_FILE);
 	fnfc.filter("Images\t*.{png,tiff,svg,jpeg,jpg}");
 	fnfc.directory("/var/tmp");           // default directory to use
+
 	// Show native chooser
 	switch (fnfc.show()) {
 		case -1: printf("ERROR: %s\n", fnfc.errmsg());    break;  // ERROR
@@ -386,28 +463,32 @@ static void chooseFile() {
 		default:
 			printf("PICKED: %s\n", fnfc.filename());
 			FileName = fnfc.filename();
-
-			if (dirStringList->canBeAddedDistinct(FileName)) addTreeItem();
-
-			drawInitialImage();
+			if (dirStringList->canBeAddedDistinct(FileName)) {
+				addTreeItem();
+				drawInitialImage();
+			}
 			break;  // FILE CHOSEN
 	}
+
+	loadingInterval();
 }
 
 static void switchVisibility(Fl_Button* chk) {
 
-
 	tmp_active = chk->value();
-	if (tmp_active) {
-
-		chk->parent()->child(0)->activate();
-	}
-	else {
-		chk->parent()->child(0)->deactivate();
-	}
+	auto first_sibling = chk->parent()->child(0);
+	if (tmp_active)
+		first_sibling->activate();
+	else
+		first_sibling->deactivate();
 
 	drawNewImage();
 }
+
+static void progrCb() {
+
+}
+
 #pragma endregion
 
 

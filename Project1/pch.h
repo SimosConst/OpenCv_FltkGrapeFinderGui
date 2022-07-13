@@ -21,5 +21,8 @@
 #include <FL/Fl_Tree.H>
 #include <FL/Fl_Button.H>
 #include <Fl/Fl_Native_File_Chooser.H>
+#include <FL/Fl_Scroll.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Progress.H>
 
 #endif
