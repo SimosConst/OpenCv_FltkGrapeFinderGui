@@ -24,5 +24,5 @@
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Progress.H>
-
+#include <FL/Fl_Round_Button.H>
 #endif

@@ -23,7 +23,9 @@ static Fl_Check_Button* chk_MorphOp_enable2 = (Fl_Check_Button*)0;
 static Fl_Check_Button* chk_MorphOp_enable1 = (Fl_Check_Button*)0;
 static Fl_Tree* dirTree = (Fl_Tree*)0;
 
-//static Fl_Check_Button* tmp_chkBtn;
+//Arrays
+//static Fl_Value_Slider* sldArr[] = {sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1};
+//static Fl_Check_Button* tmp_chkBtn;																  
 
 static std::string tmp_groupName;
 static bool tmp_active;
@@ -76,6 +78,12 @@ static Fl_Menu_Item menu_drp_MorphOp_Op[] = {
  {"Blackhat", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
+
+//LABELS
+static Fl_Box* lblPreMedian = (Fl_Box*)0;
+static Fl_Box* lblMorphOp1 = (Fl_Box*)0;
+static Fl_Box* lblMorphOp2 = (Fl_Box*)0;
+static Fl_Box* lblPostMedian = (Fl_Box*)0;
 
 #pragma endregion
 
@@ -147,6 +155,20 @@ static void drawImage2(Fl_Box* imgFrame) {
 	imgFrame->image(InitImage);
 	//RELOAD GRAPHICS
 	window->redraw();
+}
+
+static void changeCBType(bool onrelease){
+	Fl_Value_Slider* sldArr[] = { sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1 };
+	for (size_t i = 0; i < 4; i++)
+	{
+		auto cbType = onrelease ? FL_WHEN_RELEASE : FL_WHEN_CHANGED;
+		sldArr[i]->when(cbType);
+	}
+}
+
+static void toggleCB(Fl_Button* btn) {
+	bool a = btn->value();
+	changeCBType(a);
 }
 
 #pragma endregion
@@ -285,8 +307,8 @@ static void caseCalc() {
 	tmpImg->copyTo(*outImg);
 
 	if (chk_preMedian_enable->value()) calc_MedianFiltr(sld_preMedian_ksize);
-	if (chk_MorphOp_enable1->value()) calc_StructuralOp(sld_MorphOp_ksize1,drp_MorphOp_Shape1 ,drp_MorphOp_Op1);
-	if (chk_MorphOp_enable2->value()) calc_StructuralOp(sld_MorphOp_ksize2,drp_MorphOp_Shape2 ,drp_MorphOp_Op2);
+	if (chk_MorphOp_enable1->value()) calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1);
+	if (chk_MorphOp_enable2->value()) calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2);
 	if (chk_postMedian_enable->value()) calc_MedianFiltr(sld_postMedian_ksize);
 
 }
@@ -350,12 +372,12 @@ static void loadingInterval(bool toggle = false) {
 	auto a = box_jpeg_image->parent();
 	auto txt = toggle ? loadingTxt : NULL;
 	if (toggle) {
-	//	clearImgViews();
-	//	a->deactivate();
+		//	clearImgViews();
+		//	a->deactivate();
 		btn_loadImg->deactivate();
 	}
 	else {
-	//	a->activate();
+		//	a->activate();
 		btn_loadImg->activate();//REACTIVATE
 	}
 	box_jpeg_image->label(txt);
@@ -419,10 +441,10 @@ static void removeFileEntry() {
 			if (parent->children() == 0 && !hasRootParent) dirTree->remove(parent); //Remove parent if empty and not root
 
 		}
-		
+
 
 		if (isDirTreeItemSelected(true)) drawSelImg();
-		else {clearImgViews(); window->redraw(); }
+		else { clearImgViews(); window->redraw(); }
 
 	}
 }
