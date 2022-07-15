@@ -84,10 +84,34 @@ static Fl_Box* lblPreMedian = (Fl_Box*)0;
 static Fl_Box* lblMorphOp1 = (Fl_Box*)0;
 static Fl_Box* lblMorphOp2 = (Fl_Box*)0;
 static Fl_Box* lblPostMedian = (Fl_Box*)0;
+static Fl_Box* lblTotTime = (Fl_Box*)0;
+
+//Timer
+static Timer globalTimer, stepTimer;
+static int totTimer;
+
 
 #pragma endregion
 
 #pragma region HelperFunctions
+
+static long long calcFuncTime(Timer t, void (*func)()) {
+	t.start();
+	func();
+	t.end();
+	auto a = t.getDuration();
+	return a;
+}
+
+static void fillTimer(Fl_Box* box, Timer t = stepTimer, /*uchar subDivT = 3,uchar numCount = 6,*/ std::string concStr = " ms") {
+	auto a = stepTimer.getDuration(); 
+	totTimer += a;
+	auto a1 = std::to_string((float)a / 1000).substr(0, 6);
+	auto b = new std::string(a1 + concStr);
+	//box->label(b.c_str());
+	auto c = b->c_str();
+	box->label(c);
+}
 
 static void resizeImage(cv::Mat* img) {
 	double width = img->cols, height = img->rows;
@@ -157,7 +181,7 @@ static void drawImage2(Fl_Box* imgFrame) {
 	window->redraw();
 }
 
-static void changeCBType(bool onrelease){
+static void changeCBType(bool onrelease) {
 	Fl_Value_Slider* sldArr[] = { sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1 };
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -306,11 +330,17 @@ static void caseCalc() {
 	//RENEW IMG DATA WITH INITIAL
 	tmpImg->copyTo(*outImg);
 
-	if (chk_preMedian_enable->value()) calc_MedianFiltr(sld_preMedian_ksize);
-	if (chk_MorphOp_enable1->value()) calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1);
-	if (chk_MorphOp_enable2->value()) calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2);
-	if (chk_postMedian_enable->value()) calc_MedianFiltr(sld_postMedian_ksize);
+	totTimer = 0;
+	globalTimer.start();
+	if (chk_preMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize); stepTimer.end(); fillTimer(lblPreMedian); }
+	if (chk_MorphOp_enable1->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1); stepTimer.end(); fillTimer(lblMorphOp1); }
+	if (chk_MorphOp_enable2->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2); stepTimer.end(); fillTimer(lblMorphOp2); }
+	if (chk_postMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize); stepTimer.end(); fillTimer(lblPostMedian); }
+	globalTimer.end();
 
+	//fillTimer(lblTotTime, globalTimer, 1, 8, " us");
+	auto a = new std::string(std::to_string((float)totTimer / 1000)/*.substr(0,8)*/ + " ms");
+	lblTotTime->label(a->c_str());
 }
 
 //DRAW EDITED IMAGE

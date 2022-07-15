@@ -44,6 +44,8 @@ static Fl_Tree *dirTree=(Fl_Tree *)0;
 
 static Fl_Button *btn_loadImg=(Fl_Button *)0;
 
+Fl_Box *lblTotTime=(Fl_Box *)0;
+
 */
 int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,__in LPSTR lpCmdLine,__in int nShowCmd) {
   Fl::scheme("gtk+");
@@ -405,6 +407,21 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         o->labelsize(18);
         o->callback((Fl_Callback*)removeFileEntry);
       } // Fl_Button* o
+      { Fl_Group* o = new Fl_Group(380, 224, 300, 136, "Time Statistics");
+        o->box(FL_PLASTIC_DOWN_FRAME);
+        o->labelsize(18);
+        o->align(Fl_Align(FL_ALIGN_TOP|FL_ALIGN_INSIDE));
+        { lblTotTime = new Fl_Box(390, 317, 170, 33, "0 us");
+          lblTotTime->box(FL_PLASTIC_ROUND_DOWN_BOX);
+          lblTotTime->labelsize(18);
+          lblTotTime->align(Fl_Align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE));
+        } // Fl_Box* lblTotTime
+        { Fl_Box* o = new Fl_Box(390, 289, 170, 27, "Total time taken:");
+          o->labelsize(18);
+          o->align(Fl_Align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE));
+        } // Fl_Box* o
+        o->end();
+      } // Fl_Group* o
       o->end();
     } // Fl_Group* o
     { Fl_Group* o = new Fl_Group(380, 40, 190, 75, "Change Callback on:");

@@ -4,6 +4,7 @@
 #include <windows.h> // include Windows.h only if using WinMain
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <chrono>
 //#include <tchar.h>
 //#include <locale>
 //#include <codecvt>

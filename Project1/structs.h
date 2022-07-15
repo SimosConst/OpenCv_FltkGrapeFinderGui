@@ -2,7 +2,7 @@
 
 struct StringList {
 	std::string* list;
-	u_char maxLength, currCap=0;
+	u_char maxLength, currCap = 0;
 
 #pragma region staticFunctions
 
@@ -96,3 +96,57 @@ public:
 	}
 };
 
+using namespace std::chrono;
+
+struct Timer {
+private:
+	steady_clock::time_point tPointsCouple[2];
+
+	void initPoint(uchar i) {
+		tPointsCouple[i] = high_resolution_clock::now();
+	}
+
+
+public:
+	Timer() { }
+
+	void start() { initPoint(0); }
+	void end() { initPoint(1); }
+
+	long long getDuration() {
+		auto a = duration_cast<microseconds>(tPointsCouple[1] - tPointsCouple[0]).count();
+		return a;
+	}
+
+	//static void a() {
+	//	auto start = high_resolution_clock::now();
+	//	
+	//	auto finish = high_resolution_clock::now();
+	//	
+
+	//}
+
+};
+
+struct CaseFuncRunner {
+private:
+	uchar count;
+	//void** funcList;
+	bool* caseList;
+	void (**funcList)();
+
+public:
+	CaseFuncRunner(bool* cList, void (**fList)(), uchar c) {
+		caseList = cList;
+		funcList = fList;
+		count = c;
+	}
+	void excec() {
+		for (size_t i = 0; i < count; i++)
+		{
+			if (caseList[i]) {
+				funcList[i]();
+			}
+		}
+	}
+};
