@@ -23,10 +23,16 @@ static Fl_Check_Button* chk_MorphOp_enable2 = (Fl_Check_Button*)0;
 static Fl_Check_Button* chk_MorphOp_enable1 = (Fl_Check_Button*)0;
 static Fl_Tree* dirTree = (Fl_Tree*)0;
 static Fl_Tabs* tabPane = (Fl_Tabs*)0;
+
 static Fl_Value_Slider* sld_preBilateral_d = (Fl_Value_Slider*)0;
 static Fl_Value_Slider* sld_preBilateral_sCol = (Fl_Value_Slider*)0;
 static Fl_Value_Slider* sld_preBilateral_sSpace = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_thrsh_low = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_thrsh_high = (Fl_Value_Slider*)0;
+
 static Fl_Check_Button* chk_preBilateral_enable = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_threshImg_enable = (Fl_Check_Button*)0;
+
 
 //Arrays
 //static Fl_Value_Slider* sldArr[] = {sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1};
@@ -90,8 +96,9 @@ static Fl_Box* lblMorphOp1 = (Fl_Box*)0;
 static Fl_Box* lblMorphOp2 = (Fl_Box*)0;
 static Fl_Box* lblPostMedian = (Fl_Box*)0;
 static Fl_Box* lblTotTime = (Fl_Box*)0;
-static Fl_Box* lblPreBilat = (Fl_Box*)0;
 
+static Fl_Box* lblPreBilat = (Fl_Box*)0;
+static Fl_Box* lblthreshImg = (Fl_Box*)0;
 //Timer
 static Timer globalTimer, stepTimer;
 static int totTimer;
@@ -100,6 +107,11 @@ static int totTimer;
 static std::string tabNamesList[] = { "Ensemb22le 1", "Ensemble 2" };
 static StringList* tabNames = new StringList(tabNamesList);
 static ActiveTab currentTab = ActiveTab::Tab1;
+
+//Randomizer
+static cv::RNG rng(12345);
+
+
 #pragma endregion
 
 #pragma region HelperFunctions
@@ -149,6 +161,39 @@ static void resizeImage(cv::Mat* img) {
 
     *img = a;
 }
+//Credits: stereomatching
+static inline void mix_channels(cv::Mat const& src, cv::Mat& dst, std::initializer_list<int> from_to)
+{
+    cv::mixChannels(&src, 1, &dst, 1, std::begin(from_to), from_to.size() / 2);
+}
+
+static void calc_FindthreshImg(Fl_Value_Slider* sld_thrshLow, Fl_Value_Slider* sld_thrshHigh) {
+    uchar lowerBound = sld_thrshLow->value(), upperBound = sld_thrshHigh->value();
+    //std::vector<std::vector<cv::Point>> contours;
+    ////std::vector <cv::Point> contours;
+    //std::vector<cv::Vec4i> hierarchy;
+    ////Get the grayscale Image //cv::split
+    //mix_channels(threshImg, hue, { 0, 0 });
+    cv::Mat threshImg;
+
+    cv::cvtColor(*outImg, threshImg, cv::COLOR_BGR2HSV);
+    cv::inRange(threshImg, cv::Scalar(lowerBound, 0, 100), cv::Scalar(upperBound, 255, 255), threshImg);
+
+    //cv::threshold(hue, hue, sld_thrshLow->value(), sld_thrshHigh->value(), cv::THRESH_BINARY);
+    //threshImg(cv::Range(0, 0)); cv::Mat::zeros(outImg->size(), CV_8UC3);
+    //cv::cvtColor(threshImg, *outImg, cv::COLOR_HSV2BGR);
+    ////cv::threshold(threshImg, threshImg, sld_thrshLow->value(), 255, cv::THRESH_BINARY);
+    //////cv::Canny(threshImg, threshImg, sld_thrshLow->value(), sld_thrshLow->value() * 2);
+    ////cv::findContours(threshImg, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE
+    ////cv::Mat drawing = cv::Mat::zeros(outImg->size(), CV_8UC3);
+    //////cv::fillPoly(drawing, contours, cv::Scalar(230, 220, 200), cv::LINE_8);
+    ////cv::fillPoly(drawing, contours, cv::Scalar(255,255,255));
+    ////cv::bitwise_and(*outImg, drawing, *outImg);
+
+    cv::cvtColor(threshImg, threshImg, cv::COLOR_GRAY2BGR);
+    cv::bitwise_and(threshImg, *outImg, *outImg);
+    //threshImg.copyTo(*outImg);
+}
 
 static void calc_BilatFiltr(Fl_Value_Slider* sld_d, Fl_Value_Slider* sld_sc, Fl_Value_Slider* sld_ss) {
     auto a = new cv::Mat(); outImg->copyTo(*a);
@@ -197,7 +242,7 @@ static void drawImage2(Fl_Box* imgFrame) {
 }
 
 static void changeCBType(bool onrelease) {
-    Fl_Value_Slider* sldArr[] = { sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1, sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace };
+    Fl_Value_Slider* sldArr[] = { sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1, sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace, sld_thrsh_low, sld_thrsh_high};
     uchar sz = sizeof(sldArr) / 4;
     for (size_t i = 0; i < sz; i++)
     {
@@ -242,14 +287,13 @@ static void caseCalc() {
             break;
         case Tab2:
             if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
+            if (chk_threshImg_enable->value()) { stepTimer.start(); calc_FindthreshImg(sld_thrsh_low, sld_thrsh_high); stepTimer.end(); fillTimer(lblthreshImg); }
 
             break;
     }
 
     float ms = (float)totTimer / 1000;
-    float s = ms / 1000;
-    //auto msStr = ;
-
+    float s = std::round(ms) / 1000;
     lblTotTime->label((new std::string(std::to_string(ms)/*.substr(0,8)*/ + " ms | " + std::to_string(s).substr(0, 5) + " s"))->c_str());
 }
 
@@ -460,7 +504,7 @@ static void tabChange(Fl_Tabs* a) {
 
     if (str == "Ensemble 1") currentTab = ActiveTab::Tab1;
     else if (str == "Ensemble 2") currentTab = ActiveTab::Tab2;
-
+    
     drawNewImage();
 }
 

@@ -2,9 +2,13 @@
 #define PcompHeadrs_h
 
 #include <windows.h> // include Windows.h only if using WinMain
-#include <opencv2/opencv.hpp>
+//#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <iostream>
 #include <chrono>
+#include <vector>
 //#include <tchar.h>
 //#include <locale>
 //#include <codecvt>
