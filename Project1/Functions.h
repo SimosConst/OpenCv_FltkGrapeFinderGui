@@ -27,11 +27,17 @@ static Fl_Tabs* tabPane = (Fl_Tabs*)0;
 static Fl_Value_Slider* sld_preBilateral_d = (Fl_Value_Slider*)0;
 static Fl_Value_Slider* sld_preBilateral_sCol = (Fl_Value_Slider*)0;
 static Fl_Value_Slider* sld_preBilateral_sSpace = (Fl_Value_Slider*)0;
-static Fl_Value_Slider* sld_thrsh_low = (Fl_Value_Slider*)0;
-static Fl_Value_Slider* sld_thrsh_high = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_thrsh_low_1 = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_thrsh_low_2 = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_thrsh_high_1 = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_thrsh_high_2 = (Fl_Value_Slider*)0;
 
 static Fl_Check_Button* chk_preBilateral_enable = (Fl_Check_Button*)0;
-static Fl_Check_Button* chk_threshImg_enable = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_threshImg_enable_1 = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_threshImg_enable_2 = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_identification_1 = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_identification_2 = (Fl_Check_Button*)0;
+
 
 
 //Arrays
@@ -98,13 +104,16 @@ static Fl_Box* lblPostMedian = (Fl_Box*)0;
 static Fl_Box* lblTotTime = (Fl_Box*)0;
 
 static Fl_Box* lblPreBilat = (Fl_Box*)0;
-static Fl_Box* lblthreshImg = (Fl_Box*)0;
+static Fl_Box* lblthreshImg_1 = (Fl_Box*)0;
+static Fl_Box* lblthreshImg_2 = (Fl_Box*)0;
+static Fl_Box* lblIdentification_1 = (Fl_Box*)0;
+static Fl_Box* lblIdentification_2 = (Fl_Box*)0;
 //Timer
 static Timer globalTimer, stepTimer;
 static int totTimer;
 
 //Tabs
-static std::string tabNamesList[] = { "Ensemb22le 1", "Ensemble 2" };
+static std::string tabNamesList[] = { "Ensemble 1", "Ensemble 2" };
 static StringList* tabNames = new StringList(tabNamesList);
 static ActiveTab currentTab = ActiveTab::Tab1;
 
@@ -177,7 +186,7 @@ static void calc_FindthreshImg(Fl_Value_Slider* sld_thrshLow, Fl_Value_Slider* s
     cv::Mat threshImg;
 
     cv::cvtColor(*outImg, threshImg, cv::COLOR_BGR2HSV);
-    cv::inRange(threshImg, cv::Scalar(lowerBound, 0, 100), cv::Scalar(upperBound, 255, 255), threshImg);
+    cv::inRange(threshImg, cv::Scalar(lowerBound, 0, 0), cv::Scalar(upperBound, 255, 255), threshImg);
 
     //cv::threshold(hue, hue, sld_thrshLow->value(), sld_thrshHigh->value(), cv::THRESH_BINARY);
     //threshImg(cv::Range(0, 0)); cv::Mat::zeros(outImg->size(), CV_8UC3);
@@ -203,6 +212,57 @@ static void calc_BilatFiltr(Fl_Value_Slider* sld_d, Fl_Value_Slider* sld_sc, Fl_
 
 static void calc_MedianFiltr(Fl_Value_Slider* sld) {
     cv::medianBlur(*outImg, *outImg, sld->value());
+}
+
+static void calc_identifyAndDraw() {
+    cv:: Mat gray; 
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<size_t> foundIndxs;
+    std::vector<cv::Rect> foundRects;
+
+    cv::cvtColor(*outImg, gray, cv::COLOR_BGR2GRAY);
+    cv::findContours(gray, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
+    //Find the indexes of the appropriate size contours
+    for (size_t i = 0; i < contours.size(); i++)
+    {
+        auto rect = cv::boundingRect(contours[i]);
+        if (rect.height * rect.width > 5000) {
+            foundIndxs.push_back(i);
+            foundRects.push_back(rect);
+        }
+
+    }
+
+    std::vector<std::vector<cv::Point>> hull(contours.size());
+    //DRAWING 
+    for (size_t i = 0; i < foundIndxs.size(); i++)
+    {
+        cv::rectangle(*outImg, foundRects[i], cv::Scalar(200, 100, 100), 2);
+        cv::drawContours(*outImg, contours, i, cv::Scalar(100, 200, 150), 1);
+
+        //FIND AND DRAW CONVEX HULL
+        //cv::Mat hull;
+        cv::convexHull(contours[i], hull[i]);
+        cv::drawContours(*outImg, hull, i, cv::Scalar(100, 100, 200), 2);
+
+        //DRAW INFO
+        auto midPoint = size_t(foundRects[i].width / 2) + foundRects[i].x;
+        auto margin = size_t(foundRects[i].width / 16);
+        
+        auto 
+            point1 = cv::Point(midPoint - margin, foundRects[i].y + 10),
+            point2 = cv::Point(midPoint + margin, foundRects[i].y - size_t(foundRects[i].height / 5));
+        auto stem_SimpleApprox = cv::Rect(point1, point2);
+
+        cv::rectangle(*outImg, stem_SimpleApprox, cv::Scalar(100, 100, 120), -1);
+        cv::putText(
+            *outImg, 
+            "Around: (" + std::to_string(midPoint) + ',' + std::to_string(foundRects[i].y) + ')',
+            point2, cv::FONT_HERSHEY_SIMPLEX, .5, cv::Scalar(200, 200, 220), 1
+        );
+
+    }
+
 }
 
 /*u_char op, u_char shape, size_t kSize, size_t iterations = 1*/
@@ -242,7 +302,14 @@ static void drawImage2(Fl_Box* imgFrame) {
 }
 
 static void changeCBType(bool onrelease) {
-    Fl_Value_Slider* sldArr[] = { sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1, sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace, sld_thrsh_low, sld_thrsh_high};
+    Fl_Value_Slider* sldArr[] = { 
+        sld_preMedian_ksize, sld_postMedian_ksize, 
+        sld_MorphOp_ksize2, sld_MorphOp_ksize1, 
+        sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace, 
+        sld_thrsh_low_1, sld_thrsh_high_1, 
+        sld_thrsh_low_2, sld_thrsh_high_2
+    };
+
     uchar sz = sizeof(sldArr) / 4;
     for (size_t i = 0; i < sz; i++)
     {
@@ -283,18 +350,28 @@ static void caseCalc() {
             if (chk_MorphOp_enable1->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1); stepTimer.end(); fillTimer(lblMorphOp1); }
             if (chk_MorphOp_enable2->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2); stepTimer.end(); fillTimer(lblMorphOp2); }
             if (chk_postMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize); stepTimer.end(); fillTimer(lblPostMedian); }
+            if (chk_threshImg_enable_1->value()) { stepTimer.start(); calc_FindthreshImg(sld_thrsh_low_1, sld_thrsh_high_1); stepTimer.end(); fillTimer(lblthreshImg_1); }
+            
+            if (chk_identification_1->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
 
             break;
         case Tab2:
             if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
-            if (chk_threshImg_enable->value()) { stepTimer.start(); calc_FindthreshImg(sld_thrsh_low, sld_thrsh_high); stepTimer.end(); fillTimer(lblthreshImg); }
+            if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_FindthreshImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
+            
+            if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
 
             break;
     }
 
     float ms = (float)totTimer / 1000;
-    float s = std::round(ms) / 1000;
-    lblTotTime->label((new std::string(std::to_string(ms)/*.substr(0,8)*/ + " ms | " + std::to_string(s).substr(0, 5) + " s"))->c_str());
+    float s = ms / 1000;
+    size_t fps = 1 / s;
+    lblTotTime->label((
+        new std::string(std::to_string(ms).substr(0,5) + " ms | " +
+        std::to_string(s).substr(0, 5) + " s | " + 
+        std::to_string(fps) + " fps"
+    ))->c_str());
 }
 
 //DRAW EDITED IMAGE

@@ -42,6 +42,18 @@ static Fl_Check_Button *chk_postMedian_enable=(Fl_Check_Button *)0;
 
 static Fl_Box *lblPostMedian=(Fl_Box *)0;
 
+static Fl_Value_Slider *sld_thrsh_low_1=(Fl_Value_Slider *)0;
+
+static Fl_Value_Slider *sld_thrsh_high_1=(Fl_Value_Slider *)0;
+
+static Fl_Check_Button *chk_threshImg_enable_1=(Fl_Check_Button *)0;
+
+static Fl_Box *lblthreshImg_1=(Fl_Box *)0;
+
+static Fl_Check_Button *chk_identification_1=(Fl_Check_Button *)0;
+
+static Fl_Box *lblIdentification_1=(Fl_Box *)0;
+
 static Fl_Value_Slider *sld_preBilateral_d=(Fl_Value_Slider *)0;
 
 static Fl_Value_Slider *sld_preBilateral_sCol=(Fl_Value_Slider *)0;
@@ -52,13 +64,17 @@ static Fl_Check_Button *chk_preBilateral_enable=(Fl_Check_Button *)0;
 
 static Fl_Box *lblPreBilat=(Fl_Box *)0;
 
-static Fl_Value_Slider *sld_thrsh_low=(Fl_Value_Slider *)0;
+static Fl_Value_Slider *sld_thrsh_low_2=(Fl_Value_Slider *)0;
 
-static Fl_Value_Slider *sld_thrsh_high=(Fl_Value_Slider *)0;
+static Fl_Value_Slider *sld_thrsh_high_2=(Fl_Value_Slider *)0;
 
-static Fl_Check_Button *chk_threshImg_enable=(Fl_Check_Button *)0;
+static Fl_Check_Button *chk_threshImg_enable_2=(Fl_Check_Button *)0;
 
-static Fl_Box *lblthreshImg=(Fl_Box *)0;
+static Fl_Box *lblthreshImg_2=(Fl_Box *)0;
+
+static Fl_Check_Button *chk_identification_2=(Fl_Check_Button *)0;
+
+static Fl_Box *lblIdentification_2=(Fl_Box *)0;
 
 static Fl_Tree *dirTree=(Fl_Tree *)0;
 
@@ -73,7 +89,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
   //Fl::scheme("plastic");
   	
   Fl::background(238, 240, 241);
-  { window = new Fl_Double_Window(1378, 1134, "asd");
+  { window = new Fl_Double_Window(1378, 987, "asd");
     window->box(FL_PLASTIC_UP_BOX);
     window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
     { Fl_Group* o = new Fl_Group(720, 14, 640, 951);
@@ -110,12 +126,12 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
       } // Fl_Box* o
       o->end();
     } // Fl_Group* o
-    { tabPane = new Fl_Tabs(20, 398, 685, 629);
+    { tabPane = new Fl_Tabs(20, 404, 685, 561);
       tabPane->box(FL_PLASTIC_THIN_UP_BOX);
       tabPane->color((Fl_Color)48);
       tabPane->callback((Fl_Callback*)tabChange);
       tabPane->when(FL_WHEN_CHANGED);
-      { Fl_Scroll* o = new Fl_Scroll(25, 398, 680, 584, "Ensemble 1");
+      { Fl_Scroll* o = new Fl_Scroll(25, 404, 680, 520, "Ensemble 1");
         o->type(2);
         o->box(FL_PLASTIC_DOWN_BOX);
         o->color(FL_DARK1);
@@ -157,7 +173,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_preMedian_enable
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(36, 410, 190, 25, "1. Initial bluring");
+          { Fl_Box* o = new Fl_Box(36, 410, 190, 30, "1. Initial bluring");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
@@ -233,7 +249,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_MorphOp_enable1
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(36, 541, 190, 54, "2. First Morphology operation");
+          { Fl_Box* o = new Fl_Box(36, 538, 190, 54, "2. First Morphology operation");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
@@ -325,7 +341,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblMorphOp2
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(38, 846, 650, 110);
+        { Fl_Group* o = new Fl_Group(32, 846, 656, 110);
           o->labelsize(18);
           { Fl_Group* o = new Fl_Group(236, 846, 229, 110);
             o->box(FL_PLASTIC_DOWN_BOX);
@@ -378,14 +394,125 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblPostMedian
           o->end();
         } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(32, 966, 656, 166);
+          o->labelsize(18);
+          { Fl_Group* o = new Fl_Group(237, 966, 449, 166);
+            o->box(FL_PLASTIC_DOWN_BOX);
+            o->color((Fl_Color)44);
+            o->labelsize(24);
+            o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+            { Fl_Group* o = new Fl_Group(237, 976, 435, 123);
+              o->labelsize(18);
+              { sld_thrsh_low_1 = new Fl_Value_Slider(242, 976, 420, 32, "Lower Threshold");
+                sld_thrsh_low_1->tooltip("The lower value threshold");
+                sld_thrsh_low_1->type(3);
+                sld_thrsh_low_1->box(FL_PLASTIC_THIN_DOWN_BOX);
+                sld_thrsh_low_1->selection_color((Fl_Color)14);
+                sld_thrsh_low_1->labelfont(2);
+                sld_thrsh_low_1->labelsize(18);
+                sld_thrsh_low_1->maximum(255);
+                sld_thrsh_low_1->step(1);
+                sld_thrsh_low_1->value(25);
+                sld_thrsh_low_1->slider_size(1);
+                sld_thrsh_low_1->textfont(2);
+                sld_thrsh_low_1->textsize(18);
+                sld_thrsh_low_1->textcolor(FL_GRAY0);
+                sld_thrsh_low_1->callback((Fl_Callback*)drawNewImage);
+                sld_thrsh_low_1->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+                sld_thrsh_low_1->when(FL_WHEN_RELEASE);
+              } // Fl_Value_Slider* sld_thrsh_low_1
+              { sld_thrsh_high_1 = new Fl_Value_Slider(242, 1040, 420, 32, "High Threshold");
+                sld_thrsh_high_1->tooltip("The lower value threshold");
+                sld_thrsh_high_1->type(3);
+                sld_thrsh_high_1->box(FL_PLASTIC_THIN_DOWN_BOX);
+                sld_thrsh_high_1->selection_color((Fl_Color)14);
+                sld_thrsh_high_1->labelfont(2);
+                sld_thrsh_high_1->labelsize(18);
+                sld_thrsh_high_1->minimum(1);
+                sld_thrsh_high_1->maximum(255);
+                sld_thrsh_high_1->step(1);
+                sld_thrsh_high_1->value(255);
+                sld_thrsh_high_1->slider_size(1);
+                sld_thrsh_high_1->textfont(2);
+                sld_thrsh_high_1->textsize(18);
+                sld_thrsh_high_1->textcolor(FL_GRAY0);
+                sld_thrsh_high_1->callback((Fl_Callback*)drawNewImage);
+                sld_thrsh_high_1->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+                sld_thrsh_high_1->when(FL_WHEN_RELEASE);
+              } // Fl_Value_Slider* sld_thrsh_high_1
+              o->end();
+            } // Fl_Group* o
+            { chk_threshImg_enable_1 = new Fl_Check_Button(510, 1092, 156, 30, "Hue Isolation");
+              chk_threshImg_enable_1->box(FL_PLASTIC_DOWN_BOX);
+              chk_threshImg_enable_1->down_box(FL_PLASTIC_DOWN_BOX);
+              chk_threshImg_enable_1->value(1);
+              chk_threshImg_enable_1->labelfont(2);
+              chk_threshImg_enable_1->labelsize(20);
+              chk_threshImg_enable_1->callback((Fl_Callback*)switchVisibility);
+            } // Fl_Check_Button* chk_threshImg_enable_1
+            o->end();
+          } // Fl_Group* o
+          { Fl_Box* o = new Fl_Box(40, 966, 192, 30, "5. Hue thresholding ");
+            o->box(FL_PLASTIC_DOWN_FRAME);
+            o->color(FL_DARK2);
+            o->labelfont(3);
+            o->labelsize(16);
+            o->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* o
+          { lblthreshImg_1 = new Fl_Box(132, 1102, 101, 30, "0 ms");
+            lblthreshImg_1->box(FL_PLASTIC_ROUND_DOWN_BOX);
+            lblthreshImg_1->color(FL_DARK2);
+            lblthreshImg_1->labelfont(3);
+            lblthreshImg_1->labelsize(16);
+            lblthreshImg_1->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* lblthreshImg_1
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(32, 1142, 656, 65);
+          o->labelsize(18);
+          { Fl_Group* o = new Fl_Group(237, 1142, 220, 65);
+            o->box(FL_PLASTIC_DOWN_BOX);
+            o->color((Fl_Color)44);
+            o->labelsize(24);
+            o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+            { Fl_Group* o = new Fl_Group(266, 750, 15, 15);
+              o->labelsize(18);
+              o->end();
+            } // Fl_Group* o
+            { chk_identification_1 = new Fl_Check_Button(247, 1164, 200, 33, "Identification");
+              chk_identification_1->box(FL_PLASTIC_DOWN_BOX);
+              chk_identification_1->down_box(FL_PLASTIC_DOWN_BOX);
+              chk_identification_1->value(1);
+              chk_identification_1->labelfont(2);
+              chk_identification_1->labelsize(20);
+              chk_identification_1->callback((Fl_Callback*)switchVisibility);
+            } // Fl_Check_Button* chk_identification_1
+            o->end();
+          } // Fl_Group* o
+          { Fl_Box* o = new Fl_Box(38, 1142, 193, 25, "6. Identification");
+            o->box(FL_PLASTIC_DOWN_FRAME);
+            o->color(FL_DARK2);
+            o->labelfont(3);
+            o->labelsize(16);
+            o->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* o
+          { lblIdentification_1 = new Fl_Box(130, 1177, 101, 30, "0 ms");
+            lblIdentification_1->box(FL_PLASTIC_ROUND_DOWN_BOX);
+            lblIdentification_1->color(FL_DARK2);
+            lblIdentification_1->labelfont(3);
+            lblIdentification_1->labelsize(16);
+            lblIdentification_1->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* lblIdentification_1
+          o->end();
+        } // Fl_Group* o
         o->end();
       } // Fl_Scroll* o
-      { Fl_Scroll* o = new Fl_Scroll(25, 398, 680, 567, "Ensemble 2");
+      { Fl_Scroll* o = new Fl_Scroll(25, 404, 680, 520, "Ensemble 2");
         o->type(2);
         o->box(FL_PLASTIC_DOWN_BOX);
         o->color(FL_DARK1);
         o->labelsize(18);
-        { Fl_Group* o = new Fl_Group(30, 409, 656, 345);
+        { Fl_Group* o = new Fl_Group(28, 409, 658, 120);
           o->labelsize(18);
           { Fl_Group* o = new Fl_Group(236, 409, 440, 118);
             o->box(FL_PLASTIC_DOWN_BOX);
@@ -451,7 +578,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_preBilateral_enable
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(36, 410, 190, 25, "1. Initial bluring");
+          { Fl_Box* o = new Fl_Box(36, 410, 190, 50, "1. Initial bluring (Bilateral)");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
@@ -465,81 +592,117 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             lblPreBilat->labelsize(16);
             lblPreBilat->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* lblPreBilat
-          { Fl_Group* o = new Fl_Group(30, 544, 650, 171);
-            o->labelsize(18);
-            { Fl_Group* o = new Fl_Group(236, 549, 440, 166);
-              o->box(FL_PLASTIC_DOWN_BOX);
-              o->color((Fl_Color)44);
-              o->labelsize(24);
-              o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-              { Fl_Group* o = new Fl_Group(241, 554, 435, 161);
-                o->labelsize(18);
-                { sld_thrsh_low = new Fl_Value_Slider(246, 554, 420, 32, "Lower Threshold");
-                sld_thrsh_low->tooltip("The lower value threshold");
-                sld_thrsh_low->type(3);
-                sld_thrsh_low->box(FL_PLASTIC_THIN_DOWN_BOX);
-                sld_thrsh_low->selection_color((Fl_Color)14);
-                sld_thrsh_low->labelfont(2);
-                sld_thrsh_low->labelsize(18);
-                sld_thrsh_low->minimum(1);
-                sld_thrsh_low->maximum(255);
-                sld_thrsh_low->step(1);
-                sld_thrsh_low->value(25);
-                sld_thrsh_low->slider_size(1);
-                sld_thrsh_low->textfont(2);
-                sld_thrsh_low->textsize(18);
-                sld_thrsh_low->textcolor(FL_GRAY0);
-                sld_thrsh_low->callback((Fl_Callback*)drawNewImage);
-                sld_thrsh_low->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-                sld_thrsh_low->when(FL_WHEN_RELEASE);
-                } // Fl_Value_Slider* sld_thrsh_low
-                { sld_thrsh_high = new Fl_Value_Slider(246, 618, 420, 32, "High Threshold");
-                sld_thrsh_high->tooltip("The lower value threshold");
-                sld_thrsh_high->type(3);
-                sld_thrsh_high->box(FL_PLASTIC_THIN_DOWN_BOX);
-                sld_thrsh_high->selection_color((Fl_Color)14);
-                sld_thrsh_high->labelfont(2);
-                sld_thrsh_high->labelsize(18);
-                sld_thrsh_high->minimum(1);
-                sld_thrsh_high->maximum(255);
-                sld_thrsh_high->step(1);
-                sld_thrsh_high->value(255);
-                sld_thrsh_high->slider_size(1);
-                sld_thrsh_high->textfont(2);
-                sld_thrsh_high->textsize(18);
-                sld_thrsh_high->textcolor(FL_GRAY0);
-                sld_thrsh_high->callback((Fl_Callback*)drawNewImage);
-                sld_thrsh_high->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-                sld_thrsh_high->when(FL_WHEN_RELEASE);
-                } // Fl_Value_Slider* sld_thrsh_high
-                o->end();
-              } // Fl_Group* o
-              { chk_threshImg_enable = new Fl_Check_Button(514, 675, 156, 30, "Hue Isolation");
-                chk_threshImg_enable->box(FL_PLASTIC_DOWN_BOX);
-                chk_threshImg_enable->down_box(FL_PLASTIC_DOWN_BOX);
-                chk_threshImg_enable->value(1);
-                chk_threshImg_enable->labelfont(2);
-                chk_threshImg_enable->labelsize(20);
-                chk_threshImg_enable->callback((Fl_Callback*)switchVisibility);
-              } // Fl_Check_Button* chk_threshImg_enable
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(28, 544, 653, 171);
+          o->labelsize(18);
+          { Fl_Group* o = new Fl_Group(236, 544, 445, 166);
+            o->box(FL_PLASTIC_DOWN_BOX);
+            o->color((Fl_Color)44);
+            o->labelsize(24);
+            o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+            { Fl_Group* o = new Fl_Group(246, 554, 435, 123);
+              o->labelsize(18);
+              { sld_thrsh_low_2 = new Fl_Value_Slider(251, 554, 420, 32, "Lower Threshold");
+                sld_thrsh_low_2->tooltip("The lower value threshold");
+                sld_thrsh_low_2->type(3);
+                sld_thrsh_low_2->box(FL_PLASTIC_THIN_DOWN_BOX);
+                sld_thrsh_low_2->selection_color((Fl_Color)14);
+                sld_thrsh_low_2->labelfont(2);
+                sld_thrsh_low_2->labelsize(18);
+                sld_thrsh_low_2->maximum(255);
+                sld_thrsh_low_2->step(1);
+                sld_thrsh_low_2->value(25);
+                sld_thrsh_low_2->slider_size(1);
+                sld_thrsh_low_2->textfont(2);
+                sld_thrsh_low_2->textsize(18);
+                sld_thrsh_low_2->textcolor(FL_GRAY0);
+                sld_thrsh_low_2->callback((Fl_Callback*)drawNewImage);
+                sld_thrsh_low_2->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+                sld_thrsh_low_2->when(FL_WHEN_RELEASE);
+              } // Fl_Value_Slider* sld_thrsh_low_2
+              { sld_thrsh_high_2 = new Fl_Value_Slider(251, 618, 420, 32, "High Threshold");
+                sld_thrsh_high_2->tooltip("The lower value threshold");
+                sld_thrsh_high_2->type(3);
+                sld_thrsh_high_2->box(FL_PLASTIC_THIN_DOWN_BOX);
+                sld_thrsh_high_2->selection_color((Fl_Color)14);
+                sld_thrsh_high_2->labelfont(2);
+                sld_thrsh_high_2->labelsize(18);
+                sld_thrsh_high_2->minimum(1);
+                sld_thrsh_high_2->maximum(255);
+                sld_thrsh_high_2->step(1);
+                sld_thrsh_high_2->value(255);
+                sld_thrsh_high_2->slider_size(1);
+                sld_thrsh_high_2->textfont(2);
+                sld_thrsh_high_2->textsize(18);
+                sld_thrsh_high_2->textcolor(FL_GRAY0);
+                sld_thrsh_high_2->callback((Fl_Callback*)drawNewImage);
+                sld_thrsh_high_2->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+                sld_thrsh_high_2->when(FL_WHEN_RELEASE);
+              } // Fl_Value_Slider* sld_thrsh_high_2
               o->end();
             } // Fl_Group* o
-            { Fl_Box* o = new Fl_Box(36, 549, 190, 25, "2. Contours");
-              o->box(FL_PLASTIC_DOWN_FRAME);
-              o->color(FL_DARK2);
-              o->labelfont(3);
-              o->labelsize(16);
-              o->align(Fl_Align(132|FL_ALIGN_INSIDE));
-            } // Fl_Box* o
-            { lblthreshImg = new Fl_Box(126, 685, 100, 30, "0 ms");
-              lblthreshImg->box(FL_PLASTIC_ROUND_DOWN_BOX);
-              lblthreshImg->color(FL_DARK2);
-              lblthreshImg->labelfont(3);
-              lblthreshImg->labelsize(16);
-              lblthreshImg->align(Fl_Align(132|FL_ALIGN_INSIDE));
-            } // Fl_Box* lblthreshImg
+            { chk_threshImg_enable_2 = new Fl_Check_Button(519, 670, 156, 30, "Hue Isolation");
+              chk_threshImg_enable_2->box(FL_PLASTIC_DOWN_BOX);
+              chk_threshImg_enable_2->down_box(FL_PLASTIC_DOWN_BOX);
+              chk_threshImg_enable_2->value(1);
+              chk_threshImg_enable_2->labelfont(2);
+              chk_threshImg_enable_2->labelsize(20);
+              chk_threshImg_enable_2->callback((Fl_Callback*)switchVisibility);
+            } // Fl_Check_Button* chk_threshImg_enable_2
             o->end();
           } // Fl_Group* o
+          { Fl_Box* o = new Fl_Box(36, 544, 190, 30, "2. Hue thresholding ");
+            o->box(FL_PLASTIC_DOWN_FRAME);
+            o->color(FL_DARK2);
+            o->labelfont(3);
+            o->labelsize(16);
+            o->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* o
+          { lblthreshImg_2 = new Fl_Box(127, 680, 100, 30, "0 ms");
+            lblthreshImg_2->box(FL_PLASTIC_ROUND_DOWN_BOX);
+            lblthreshImg_2->color(FL_DARK2);
+            lblthreshImg_2->labelfont(3);
+            lblthreshImg_2->labelsize(16);
+            lblthreshImg_2->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* lblthreshImg_2
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(28, 720, 656, 65);
+          o->labelsize(18);
+          { Fl_Group* o = new Fl_Group(236, 720, 220, 65);
+            o->box(FL_PLASTIC_DOWN_BOX);
+            o->color((Fl_Color)44);
+            o->labelsize(24);
+            o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
+            { Fl_Group* o = new Fl_Group(260, 745, 15, 15);
+              o->labelsize(18);
+              o->end();
+            } // Fl_Group* o
+            { chk_identification_2 = new Fl_Check_Button(246, 742, 200, 33, "Identification");
+              chk_identification_2->box(FL_PLASTIC_DOWN_BOX);
+              chk_identification_2->down_box(FL_PLASTIC_DOWN_BOX);
+              chk_identification_2->value(1);
+              chk_identification_2->labelfont(2);
+              chk_identification_2->labelsize(20);
+              chk_identification_2->callback((Fl_Callback*)switchVisibility);
+            } // Fl_Check_Button* chk_identification_2
+            o->end();
+          } // Fl_Group* o
+          { Fl_Box* o = new Fl_Box(34, 720, 193, 25, "3. Identification");
+            o->box(FL_PLASTIC_DOWN_FRAME);
+            o->color(FL_DARK2);
+            o->labelfont(3);
+            o->labelsize(16);
+            o->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* o
+          { lblIdentification_2 = new Fl_Box(126, 755, 101, 30, "0 ms");
+            lblIdentification_2->box(FL_PLASTIC_ROUND_DOWN_BOX);
+            lblIdentification_2->color(FL_DARK2);
+            lblIdentification_2->labelfont(3);
+            lblIdentification_2->labelsize(16);
+            lblIdentification_2->align(Fl_Align(132|FL_ALIGN_INSIDE));
+          } // Fl_Box* lblIdentification_2
           o->end();
         } // Fl_Group* o
         o->end();
@@ -574,7 +737,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         o->box(FL_PLASTIC_DOWN_FRAME);
         o->labelsize(18);
         o->align(Fl_Align(FL_ALIGN_TOP|FL_ALIGN_INSIDE));
-        { lblTotTime = new Fl_Box(390, 317, 280, 33, "0 ms | 0 s");
+        { lblTotTime = new Fl_Box(390, 317, 280, 33, "0 ms | 0 s | 0 fps");
           lblTotTime->box(FL_PLASTIC_ROUND_DOWN_BOX);
           lblTotTime->labelsize(18);
           lblTotTime->align(Fl_Align(FL_ALIGN_CENTER|FL_ALIGN_INSIDE));
