@@ -89,7 +89,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
   //Fl::scheme("plastic");
   	
   Fl::background(238, 240, 241);
-  { window = new Fl_Double_Window(1378, 987, "asd");
+  { window = new Fl_Double_Window(1378, 993, "Simple Grape Stemm Visual Aproximator");
     window->box(FL_PLASTIC_UP_BOX);
     window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
     { Fl_Group* o = new Fl_Group(720, 14, 640, 951);
@@ -131,22 +131,21 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
       tabPane->color((Fl_Color)48);
       tabPane->callback((Fl_Callback*)tabChange);
       tabPane->when(FL_WHEN_CHANGED);
-      { Fl_Scroll* o = new Fl_Scroll(25, 404, 680, 520, "Ensemble 1");
+      { Fl_Scroll* o = new Fl_Scroll(22, 404, 680, 510, "Ensemble 1");
         o->type(2);
         o->box(FL_PLASTIC_DOWN_BOX);
         o->color(FL_DARK1);
         o->labelsize(18);
-        o->hide();
-        { Fl_Group* o = new Fl_Group(36, 409, 650, 120);
+        { Fl_Group* o = new Fl_Group(34, 414, 656, 120);
           o->labelsize(18);
-          { Fl_Group* o = new Fl_Group(236, 409, 218, 118);
+          { Fl_Group* o = new Fl_Group(234, 414, 446, 118);
             o->box(FL_PLASTIC_DOWN_BOX);
             o->color((Fl_Color)44);
             o->labelsize(24);
             o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-            { Fl_Group* o = new Fl_Group(241, 414, 213, 71);
+            { Fl_Group* o = new Fl_Group(237, 419, 431, 71);
               o->labelsize(18);
-              { sld_preMedian_ksize = new Fl_Value_Slider(246, 444, 198, 30, "Kernel Size:");
+              { sld_preMedian_ksize = new Fl_Value_Slider(242, 449, 426, 30, "Kernel Size:");
                 sld_preMedian_ksize->type(1);
                 sld_preMedian_ksize->box(FL_PLASTIC_DOWN_BOX);
                 sld_preMedian_ksize->selection_color((Fl_Color)14);
@@ -163,7 +162,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
               } // Fl_Value_Slider* sld_preMedian_ksize
               o->end();
             } // Fl_Group* o
-            { chk_preMedian_enable = new Fl_Check_Button(246, 483, 193, 30, "Median Blur (Pre)");
+            { chk_preMedian_enable = new Fl_Check_Button(242, 492, 199, 30, "Median Blur (Pre)");
               chk_preMedian_enable->box(FL_PLASTIC_DOWN_BOX);
               chk_preMedian_enable->down_box(FL_PLASTIC_DOWN_BOX);
               chk_preMedian_enable->value(1);
@@ -173,14 +172,14 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_preMedian_enable
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(36, 410, 190, 30, "1. Initial bluring");
+          { Fl_Box* o = new Fl_Box(34, 415, 190, 30, "1. Initial bluring");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
             o->labelsize(16);
             o->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* o
-          { lblPreMedian = new Fl_Box(126, 499, 100, 30, "0 ms");
+          { lblPreMedian = new Fl_Box(124, 504, 100, 30, "0 ms");
             lblPreMedian->box(FL_PLASTIC_ROUND_DOWN_BOX);
             lblPreMedian->color(FL_DARK2);
             lblPreMedian->labelfont(3);
@@ -189,16 +188,16 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblPreMedian
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(36, 538, 656, 148);
+        { Fl_Group* o = new Fl_Group(34, 543, 656, 148);
           o->labelsize(18);
-          { Fl_Group* o = new Fl_Group(236, 538, 456, 148);
+          { Fl_Group* o = new Fl_Group(234, 543, 446, 140);
             o->box(FL_PLASTIC_DOWN_BOX);
             o->color((Fl_Color)44);
             o->labelsize(24);
             o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-            { Fl_Group* o = new Fl_Group(242, 538, 440, 140);
+            { Fl_Group* o = new Fl_Group(238, 543, 430, 140);
               o->labelsize(18);
-              { sld_MorphOp_ksize1 = new Fl_Value_Slider(246, 630, 150, 31, "Kernel Size:");
+              { sld_MorphOp_ksize1 = new Fl_Value_Slider(506, 637, 162, 31, "Kernel Size:");
                 sld_MorphOp_ksize1->type(1);
                 sld_MorphOp_ksize1->box(FL_PLASTIC_DOWN_BOX);
                 sld_MorphOp_ksize1->selection_color((Fl_Color)14);
@@ -213,7 +212,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
                 sld_MorphOp_ksize1->align(Fl_Align(FL_ALIGN_TOP_LEFT));
                 sld_MorphOp_ksize1->when(FL_WHEN_RELEASE);
               } // Fl_Value_Slider* sld_MorphOp_ksize1
-              { drp_MorphOp_Shape1 = new Fl_Choice(246, 570, 150, 30, "Morphology Shape");
+              { drp_MorphOp_Shape1 = new Fl_Choice(242, 575, 209, 30, "Morphology Shape");
                 drp_MorphOp_Shape1->box(FL_PLASTIC_THIN_UP_BOX);
                 drp_MorphOp_Shape1->down_box(FL_PLASTIC_THIN_DOWN_BOX);
                 drp_MorphOp_Shape1->selection_color((Fl_Color)14);
@@ -225,7 +224,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
                 drp_MorphOp_Shape1->menu(menu_drp_MorphOp_Shape);
                 drp_MorphOp_Shape1->value(2);
               } // Fl_Choice* drp_MorphOp_Shape1
-              { drp_MorphOp_Op1 = new Fl_Choice(406, 570, 185, 30, "Morphology Operation");
+              { drp_MorphOp_Op1 = new Fl_Choice(466, 575, 202, 30, "Morphology Operation");
                 drp_MorphOp_Op1->box(FL_PLASTIC_THIN_UP_BOX);
                 drp_MorphOp_Op1->down_box(FL_PLASTIC_THIN_DOWN_BOX);
                 drp_MorphOp_Op1->selection_color((Fl_Color)14);
@@ -239,7 +238,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
               } // Fl_Choice* drp_MorphOp_Op1
               o->end();
             } // Fl_Group* o
-            { chk_MorphOp_enable1 = new Fl_Check_Button(406, 643, 260, 32, "Morphology Operation 1");
+            { chk_MorphOp_enable1 = new Fl_Check_Button(238, 636, 256, 32, "Morphology Operation 1");
               chk_MorphOp_enable1->box(FL_PLASTIC_DOWN_BOX);
               chk_MorphOp_enable1->down_box(FL_PLASTIC_DOWN_BOX);
               chk_MorphOp_enable1->value(1);
@@ -249,14 +248,14 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_MorphOp_enable1
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(36, 538, 190, 54, "2. First Morphology operation");
+          { Fl_Box* o = new Fl_Box(34, 543, 188, 54, "2. First Morphology operation");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
             o->labelsize(16);
             o->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* o
-          { lblMorphOp1 = new Fl_Box(126, 651, 100, 30, "0 ms");
+          { lblMorphOp1 = new Fl_Box(121, 653, 99, 30, "0 ms");
             lblMorphOp1->box(FL_PLASTIC_ROUND_DOWN_BOX);
             lblMorphOp1->color(FL_DARK2);
             lblMorphOp1->labelfont(3);
@@ -265,16 +264,16 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblMorphOp1
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(36, 696, 658, 140);
+        { Fl_Group* o = new Fl_Group(34, 691, 656, 135);
           o->labelsize(18);
-          { Fl_Group* o = new Fl_Group(236, 696, 458, 140);
+          { Fl_Group* o = new Fl_Group(234, 691, 446, 135);
             o->box(FL_PLASTIC_DOWN_BOX);
             o->color((Fl_Color)44);
             o->labelsize(24);
             o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-            { Fl_Group* o = new Fl_Group(242, 696, 440, 140);
+            { Fl_Group* o = new Fl_Group(237, 691, 431, 135);
               o->labelsize(18);
-              { sld_MorphOp_ksize2 = new Fl_Value_Slider(246, 788, 150, 31, "Kernel Size:");
+              { sld_MorphOp_ksize2 = new Fl_Value_Slider(506, 785, 162, 31, "Kernel Size:");
                 sld_MorphOp_ksize2->type(1);
                 sld_MorphOp_ksize2->box(FL_PLASTIC_DOWN_BOX);
                 sld_MorphOp_ksize2->selection_color((Fl_Color)14);
@@ -289,7 +288,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
                 sld_MorphOp_ksize2->align(Fl_Align(FL_ALIGN_TOP_LEFT));
                 sld_MorphOp_ksize2->when(FL_WHEN_RELEASE);
               } // Fl_Value_Slider* sld_MorphOp_ksize2
-              { drp_MorphOp_Shape2 = new Fl_Choice(246, 728, 150, 30, "Morphology Shape");
+              { drp_MorphOp_Shape2 = new Fl_Choice(242, 723, 209, 30, "Morphology Shape");
                 drp_MorphOp_Shape2->box(FL_PLASTIC_THIN_UP_BOX);
                 drp_MorphOp_Shape2->down_box(FL_PLASTIC_THIN_DOWN_BOX);
                 drp_MorphOp_Shape2->selection_color((Fl_Color)14);
@@ -301,7 +300,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
                 drp_MorphOp_Shape2->menu(menu_drp_MorphOp_Shape);
                 drp_MorphOp_Shape2->value(2);
               } // Fl_Choice* drp_MorphOp_Shape2
-              { drp_MorphOp_Op2 = new Fl_Choice(406, 728, 185, 30, "Morphology Operation");
+              { drp_MorphOp_Op2 = new Fl_Choice(466, 723, 202, 30, "Morphology Operation");
                 drp_MorphOp_Op2->box(FL_PLASTIC_THIN_UP_BOX);
                 drp_MorphOp_Op2->down_box(FL_PLASTIC_THIN_DOWN_BOX);
                 drp_MorphOp_Op2->selection_color((Fl_Color)14);
@@ -315,7 +314,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
               } // Fl_Choice* drp_MorphOp_Op2
               o->end();
             } // Fl_Group* o
-            { chk_MorphOp_enable2 = new Fl_Check_Button(406, 794, 260, 32, "Morphology Operation 2");
+            { chk_MorphOp_enable2 = new Fl_Check_Button(237, 784, 259, 32, "Morphology Operation 2");
               chk_MorphOp_enable2->box(FL_PLASTIC_DOWN_BOX);
               chk_MorphOp_enable2->down_box(FL_PLASTIC_DOWN_BOX);
               chk_MorphOp_enable2->value(1);
@@ -325,14 +324,14 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_MorphOp_enable2
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(37, 696, 189, 55, "3. Second Morphology operation");
+          { Fl_Box* o = new Fl_Box(35, 691, 187, 55, "3. Second Morphology operation");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
             o->labelsize(16);
             o->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* o
-          { lblMorphOp2 = new Fl_Box(126, 806, 100, 30, "0 ms");
+          { lblMorphOp2 = new Fl_Box(123, 796, 99, 30, "0 ms");
             lblMorphOp2->box(FL_PLASTIC_ROUND_DOWN_BOX);
             lblMorphOp2->color(FL_DARK2);
             lblMorphOp2->labelfont(3);
@@ -341,16 +340,16 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblMorphOp2
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(32, 846, 656, 110);
+        { Fl_Group* o = new Fl_Group(34, 836, 656, 110);
           o->labelsize(18);
-          { Fl_Group* o = new Fl_Group(236, 846, 229, 110);
+          { Fl_Group* o = new Fl_Group(232, 836, 448, 110);
             o->box(FL_PLASTIC_DOWN_BOX);
             o->color((Fl_Color)44);
             o->labelsize(24);
             o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-            { Fl_Group* o = new Fl_Group(236, 850, 215, 66);
+            { Fl_Group* o = new Fl_Group(232, 840, 436, 66);
               o->labelsize(18);
-              { sld_postMedian_ksize = new Fl_Value_Slider(246, 878, 200, 30, "Kernel Size:");
+              { sld_postMedian_ksize = new Fl_Value_Slider(242, 868, 426, 30, "Kernel Size:");
                 sld_postMedian_ksize->type(1);
                 sld_postMedian_ksize->box(FL_PLASTIC_DOWN_BOX);
                 sld_postMedian_ksize->color(FL_DARK1);
@@ -368,7 +367,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
               } // Fl_Value_Slider* sld_postMedian_ksize
               o->end();
             } // Fl_Group* o
-            { chk_postMedian_enable = new Fl_Check_Button(241, 913, 200, 33, "Median Blur (Post)");
+            { chk_postMedian_enable = new Fl_Check_Button(240, 908, 203, 33, "Median Blur (Post)");
               chk_postMedian_enable->box(FL_PLASTIC_DOWN_BOX);
               chk_postMedian_enable->down_box(FL_PLASTIC_DOWN_BOX);
               chk_postMedian_enable->value(1);
@@ -378,14 +377,14 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_postMedian_enable
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(38, 846, 191, 25, "4. Final bluring");
+          { Fl_Box* o = new Fl_Box(40, 836, 189, 25, "4. Final bluring");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
             o->labelsize(16);
             o->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* o
-          { lblPostMedian = new Fl_Box(129, 926, 100, 30, "0 ms");
+          { lblPostMedian = new Fl_Box(130, 916, 99, 30, "0 ms");
             lblPostMedian->box(FL_PLASTIC_ROUND_DOWN_BOX);
             lblPostMedian->color(FL_DARK2);
             lblPostMedian->labelfont(3);
@@ -394,16 +393,16 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblPostMedian
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(32, 966, 656, 166);
+        { Fl_Group* o = new Fl_Group(34, 954, 656, 166);
           o->labelsize(18);
-          { Fl_Group* o = new Fl_Group(237, 966, 449, 166);
+          { Fl_Group* o = new Fl_Group(236, 954, 444, 166);
             o->box(FL_PLASTIC_DOWN_BOX);
             o->color((Fl_Color)44);
             o->labelsize(24);
             o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-            { Fl_Group* o = new Fl_Group(237, 976, 435, 123);
+            { Fl_Group* o = new Fl_Group(237, 964, 431, 123);
               o->labelsize(18);
-              { sld_thrsh_low_1 = new Fl_Value_Slider(242, 976, 420, 32, "Lower Threshold");
+              { sld_thrsh_low_1 = new Fl_Value_Slider(245, 964, 423, 32, "Lower Threshold");
                 sld_thrsh_low_1->tooltip("The lower value threshold");
                 sld_thrsh_low_1->type(3);
                 sld_thrsh_low_1->box(FL_PLASTIC_THIN_DOWN_BOX);
@@ -421,7 +420,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
                 sld_thrsh_low_1->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
                 sld_thrsh_low_1->when(FL_WHEN_RELEASE);
               } // Fl_Value_Slider* sld_thrsh_low_1
-              { sld_thrsh_high_1 = new Fl_Value_Slider(242, 1040, 420, 32, "High Threshold");
+              { sld_thrsh_high_1 = new Fl_Value_Slider(245, 1028, 423, 32, "High Threshold");
                 sld_thrsh_high_1->tooltip("The lower value threshold");
                 sld_thrsh_high_1->type(3);
                 sld_thrsh_high_1->box(FL_PLASTIC_THIN_DOWN_BOX);
@@ -442,7 +441,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
               } // Fl_Value_Slider* sld_thrsh_high_1
               o->end();
             } // Fl_Group* o
-            { chk_threshImg_enable_1 = new Fl_Check_Button(510, 1092, 156, 30, "Hue Isolation");
+            { chk_threshImg_enable_1 = new Fl_Check_Button(245, 1083, 159, 30, "Hue Isolation");
               chk_threshImg_enable_1->box(FL_PLASTIC_DOWN_BOX);
               chk_threshImg_enable_1->down_box(FL_PLASTIC_DOWN_BOX);
               chk_threshImg_enable_1->value(1);
@@ -452,14 +451,14 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_threshImg_enable_1
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(40, 966, 192, 30, "5. Hue thresholding ");
+          { Fl_Box* o = new Fl_Box(42, 954, 190, 30, "5. Hue thresholding ");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
             o->labelsize(16);
             o->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* o
-          { lblthreshImg_1 = new Fl_Box(132, 1102, 101, 30, "0 ms");
+          { lblthreshImg_1 = new Fl_Box(133, 1090, 100, 30, "0 ms");
             lblthreshImg_1->box(FL_PLASTIC_ROUND_DOWN_BOX);
             lblthreshImg_1->color(FL_DARK2);
             lblthreshImg_1->labelfont(3);
@@ -468,18 +467,18 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           } // Fl_Box* lblthreshImg_1
           o->end();
         } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(32, 1142, 656, 65);
+        { Fl_Group* o = new Fl_Group(34, 1130, 656, 62);
           o->labelsize(18);
-          { Fl_Group* o = new Fl_Group(237, 1142, 220, 65);
+          { Fl_Group* o = new Fl_Group(236, 1130, 444, 62);
             o->box(FL_PLASTIC_DOWN_BOX);
             o->color((Fl_Color)44);
             o->labelsize(24);
             o->align(Fl_Align(FL_ALIGN_BOTTOM_LEFT));
-            { Fl_Group* o = new Fl_Group(266, 750, 15, 15);
+            { Fl_Group* o = new Fl_Group(260, 1130, 15, 0);
               o->labelsize(18);
               o->end();
             } // Fl_Group* o
-            { chk_identification_1 = new Fl_Check_Button(247, 1164, 200, 33, "Identification");
+            { chk_identification_1 = new Fl_Check_Button(239, 1145, 157, 33, "Identification");
               chk_identification_1->box(FL_PLASTIC_DOWN_BOX);
               chk_identification_1->down_box(FL_PLASTIC_DOWN_BOX);
               chk_identification_1->value(1);
@@ -489,14 +488,14 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
             } // Fl_Check_Button* chk_identification_1
             o->end();
           } // Fl_Group* o
-          { Fl_Box* o = new Fl_Box(38, 1142, 193, 25, "6. Identification");
+          { Fl_Box* o = new Fl_Box(40, 1130, 191, 25, "6. Identification");
             o->box(FL_PLASTIC_DOWN_FRAME);
             o->color(FL_DARK2);
             o->labelfont(3);
             o->labelsize(16);
             o->align(Fl_Align(132|FL_ALIGN_INSIDE));
           } // Fl_Box* o
-          { lblIdentification_1 = new Fl_Box(130, 1177, 101, 30, "0 ms");
+          { lblIdentification_1 = new Fl_Box(131, 1165, 100, 27, "0 ms");
             lblIdentification_1->box(FL_PLASTIC_ROUND_DOWN_BOX);
             lblIdentification_1->color(FL_DARK2);
             lblIdentification_1->labelfont(3);
@@ -507,11 +506,12 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         } // Fl_Group* o
         o->end();
       } // Fl_Scroll* o
-      { Fl_Scroll* o = new Fl_Scroll(25, 404, 680, 520, "Ensemble 2");
+      { Fl_Scroll* o = new Fl_Scroll(25, 404, 680, 394, "Ensemble 2");
         o->type(2);
         o->box(FL_PLASTIC_DOWN_BOX);
         o->color(FL_DARK1);
         o->labelsize(18);
+        o->hide();
         { Fl_Group* o = new Fl_Group(28, 409, 658, 120);
           o->labelsize(18);
           { Fl_Group* o = new Fl_Group(236, 409, 440, 118);
@@ -733,7 +733,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         o->labelsize(18);
         o->callback((Fl_Callback*)removeFileEntry);
       } // Fl_Button* o
-      { Fl_Group* o = new Fl_Group(380, 222, 300, 136, "Time Statistics");
+      { Fl_Group* o = new Fl_Group(380, 222, 310, 136, "Time Statistics");
         o->box(FL_PLASTIC_DOWN_FRAME);
         o->labelsize(18);
         o->align(Fl_Align(FL_ALIGN_TOP|FL_ALIGN_INSIDE));
@@ -748,24 +748,43 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         } // Fl_Box* o
         o->end();
       } // Fl_Group* o
-      o->end();
-    } // Fl_Group* o
-    { Fl_Group* o = new Fl_Group(380, 40, 190, 75, "Change Callback on:");
-      o->box(FL_PLASTIC_DOWN_FRAME);
-      o->labelsize(18);
-      o->align(Fl_Align(133|FL_ALIGN_INSIDE));
-      { Fl_Light_Button* o = new Fl_Light_Button(390, 75, 140, 30, "Release");
-        o->box(FL_PLASTIC_ROUND_DOWN_BOX);
-        o->down_box(FL_PLASTIC_ROUND_DOWN_BOX);
-        o->value(1);
-        o->selection_color((Fl_Color)14);
+      { Fl_Group* o = new Fl_Group(380, 145, 310, 67, "Change Callback on:");
+        o->box(FL_PLASTIC_DOWN_FRAME);
         o->labelsize(18);
-        o->callback((Fl_Callback*)toggleCB);
-        o->do_callback();
-      } // Fl_Light_Button* o
+        o->align(Fl_Align(133|FL_ALIGN_INSIDE));
+        { Fl_Light_Button* o = new Fl_Light_Button(390, 172, 140, 30, "Release");
+          o->box(FL_PLASTIC_ROUND_DOWN_BOX);
+          o->down_box(FL_PLASTIC_ROUND_DOWN_BOX);
+          o->selection_color((Fl_Color)14);
+          o->labelsize(18);
+          o->callback((Fl_Callback*)toggleCB);
+          o->do_callback();
+        } // Fl_Light_Button* o
+        o->end();
+      } // Fl_Group* o
+      { Fl_Group* o = new Fl_Group(555, 37, 135, 100);
+        o->box(FL_PLASTIC_DOWN_FRAME);
+        o->labelsize(18);
+        { Fl_Button* o = new Fl_Button(565, 47, 115, 35, "Help");
+          o->box(FL_PLASTIC_THIN_UP_BOX);
+          o->down_box(FL_PLASTIC_THIN_DOWN_BOX);
+          o->labelsize(18);
+        } // Fl_Button* o
+        { Fl_Button* o = new Fl_Button(565, 92, 115, 35, "Credits");
+          o->box(FL_PLASTIC_THIN_UP_BOX);
+          o->down_box(FL_PLASTIC_THIN_DOWN_BOX);
+          o->labelsize(18);
+        } // Fl_Button* o
+        o->end();
+      } // Fl_Group* o
+      { Fl_Box* o = new Fl_Box(380, 37, 165, 100, "Simple Grape Stem Approximator");
+        o->box(FL_PLASTIC_DOWN_FRAME);
+        o->labelfont(3);
+        o->labelsize(20);
+        o->align(Fl_Align(FL_ALIGN_WRAP|FL_ALIGN_INSIDE));
+      } // Fl_Box* o
       o->end();
     } // Fl_Group* o
-    window->set_non_modal();
     window->end();
   } // Fl_Double_Window* window
   {
