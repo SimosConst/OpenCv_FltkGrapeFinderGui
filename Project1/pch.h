@@ -30,4 +30,5 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Round_Button.H>
+#include <FL/fl_ask.H>
 #endif

@@ -16,7 +16,7 @@ int __stdcall}
 Fl::background(238, 240, 241);} {}
   Fl_Window window {
     label {Simple Grape Stemm Visual Aproximator} open
-    private xywh {599 38 1378 993} type Double box PLASTIC_UP_BOX align 80 visible
+    private xywh {842 38 1378 984} type Double box PLASTIC_UP_BOX align 80 visible
   } {
     Fl_Group {} {
       private xywh {720 14 640 951} box PLASTIC_DOWN_BOX color 46 labelsize 24
@@ -39,14 +39,14 @@ Fl::background(238, 240, 241);} {}
       }
     }
     Fl_Tabs tabPane {
-      callback tabChange open selected
-      private xywh {20 404 685 561} box PLASTIC_THIN_UP_BOX color 48 when 1
+      callback tabChange open
+      private xywh {20 404 685 560} box PLASTIC_THIN_UP_BOX color 48 when 1
     } {
       Fl_Scroll {} {
-        label {Ensemble 1}
-        private xywh {22 404 680 510} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18
+        label {Ensemble 1} open
+        private xywh {22 404 680 522} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
       } {
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {34 414 656 120} labelsize 18
         } {
           Fl_Group {} {open
@@ -164,7 +164,7 @@ Fl::background(238, 240, 241);} {}
             private xywh {123 796 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {34 836 656 110} labelsize 18
         } {
           Fl_Group {} {open
@@ -256,7 +256,7 @@ Fl::background(238, 240, 241);} {}
       }
       Fl_Scroll {} {
         label {Ensemble 2}
-        private xywh {25 404 680 394} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
+        private xywh {25 404 680 394} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18
       } {
         Fl_Group {} {
           xywh {28 409 658 120} labelsize 18
@@ -359,31 +359,21 @@ Fl::background(238, 240, 241);} {}
         }
       }
     }
-    Fl_Group {} {
+    Fl_Group {} {open
       private xywh {20 14 680 364} box PLASTIC_DOWN_BOX color 46
     } {
       Fl_Tree dirTree {
         callback loadImgFromTree
-        private xywh {40 37 330 278} box PLASTIC_DOWN_BOX labelsize 20 when 4
+        private xywh {40 37 330 219} box PLASTIC_DOWN_BOX labelsize 20 when 4
         code0 {dirTree->root_label("Loaded Images");}
-      }
-      Fl_Button btn_loadImg {
-        label {Load New Image}
-        callback chooseFile
-        private xywh {210 328 160 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
-      }
-      Fl_Button {} {
-        label {Delete entry}
-        callback removeFileEntry
-        private xywh {40 328 115 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX shortcut 0xffff labelfont 2 labelsize 18
       }
       Fl_Group {} {
         label {Time Statistics}
-        xywh {380 222 310 136} box PLASTIC_DOWN_FRAME labelsize 18 align 17
+        xywh {380 230 310 128} box PLASTIC_DOWN_FRAME labelsize 18 align 17
       } {
         Fl_Box lblTotTime {
           label {0 ms | 0 s | 0 fps}
-          xywh {390 317 280 33} box PLASTIC_ROUND_DOWN_BOX labelsize 18 align 16
+          xywh {390 317 290 33} box PLASTIC_ROUND_DOWN_BOX labelsize 18 align 16
         }
         Fl_Box {} {
           label {Total time taken:}
@@ -392,16 +382,16 @@ Fl::background(238, 240, 241);} {}
       }
       Fl_Group {} {
         label {Change Callback on:} open
-        xywh {380 145 310 67} box PLASTIC_DOWN_FRAME labelsize 18 align 149
+        xywh {380 147 310 73} box PLASTIC_DOWN_FRAME labelsize 18 align 149
       } {
         Fl_Light_Button {} {
           label Release
           callback toggleCB
-          xywh {390 172 140 30} box PLASTIC_ROUND_DOWN_BOX down_box PLASTIC_ROUND_DOWN_BOX selection_color 14 labelsize 18
+          xywh {390 180 140 30} box PLASTIC_ROUND_DOWN_BOX down_box PLASTIC_ROUND_DOWN_BOX selection_color 14 labelsize 18
           code3 {o->do_callback();}
         }
       }
-      Fl_Group {} {
+      Fl_Group {} {open
         xywh {555 37 135 100} box PLASTIC_DOWN_FRAME labelsize 18
       } {
         Fl_Button {} {
@@ -410,12 +400,32 @@ Fl::background(238, 240, 241);} {}
         }
         Fl_Button {} {
           label Credits
+          callback credits
           xywh {565 92 115 35} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
         }
       }
       Fl_Box {} {
-        label {Simple Grape Stem Approximator}
-        xywh {380 37 165 100} box PLASTIC_DOWN_FRAME labelfont 3 labelsize 20 align 144
+        label {Simple Grape's Stem Approximator}
+        xywh {380 37 165 100} box PLASTIC_DOWN_FRAME labelfont 3 labelsize 22 align 148
+      }
+      Fl_Group {} {open
+        xywh {40 266 330 92} box PLASTIC_DOWN_FRAME labelsize 18
+      } {
+        Fl_Button btn_loadImg {
+          label {Load New Image}
+          callback chooseFile
+          private xywh {205 276 155 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
+        }
+        Fl_Button {} {
+          label {Remove picture}
+          callback removeFileEntry
+          private xywh {50 276 145 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX shortcut 0xffff labelfont 2 labelsize 18
+        }
+        Fl_Button btn_saveImg {
+          label {Save final Image as}
+          callback saveImg
+          private xywh {180 316 180 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18 deactivate
+        }
       }
     }
   }

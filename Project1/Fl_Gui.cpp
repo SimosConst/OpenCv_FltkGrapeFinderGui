@@ -78,9 +78,11 @@ static Fl_Box *lblIdentification_2=(Fl_Box *)0;
 
 static Fl_Tree *dirTree=(Fl_Tree *)0;
 
+Fl_Box *lblTotTime=(Fl_Box *)0;
+
 static Fl_Button *btn_loadImg=(Fl_Button *)0;
 
-Fl_Box *lblTotTime=(Fl_Box *)0;
+static Fl_Button *btn_saveImg=(Fl_Button *)0;
 
 */
 int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,__in LPSTR lpCmdLine,__in int nShowCmd) {
@@ -89,7 +91,7 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
   //Fl::scheme("plastic");
   	
   Fl::background(238, 240, 241);
-  { window = new Fl_Double_Window(1378, 993, "Simple Grape Stemm Visual Aproximator");
+  { window = new Fl_Double_Window(1378, 984, "Simple Grape Stemm Visual Aproximator");
     window->box(FL_PLASTIC_UP_BOX);
     window->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
     { Fl_Group* o = new Fl_Group(720, 14, 640, 951);
@@ -126,16 +128,17 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
       } // Fl_Box* o
       o->end();
     } // Fl_Group* o
-    { tabPane = new Fl_Tabs(20, 404, 685, 561);
+    { tabPane = new Fl_Tabs(20, 404, 685, 560);
       tabPane->box(FL_PLASTIC_THIN_UP_BOX);
       tabPane->color((Fl_Color)48);
       tabPane->callback((Fl_Callback*)tabChange);
       tabPane->when(FL_WHEN_CHANGED);
-      { Fl_Scroll* o = new Fl_Scroll(22, 404, 680, 510, "Ensemble 1");
+      { Fl_Scroll* o = new Fl_Scroll(22, 404, 680, 522, "Ensemble 1");
         o->type(2);
         o->box(FL_PLASTIC_DOWN_BOX);
         o->color(FL_DARK1);
         o->labelsize(18);
+        o->hide();
         { Fl_Group* o = new Fl_Group(34, 414, 656, 120);
           o->labelsize(18);
           { Fl_Group* o = new Fl_Group(234, 414, 446, 118);
@@ -511,7 +514,6 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         o->box(FL_PLASTIC_DOWN_BOX);
         o->color(FL_DARK1);
         o->labelsize(18);
-        o->hide();
         { Fl_Group* o = new Fl_Group(28, 409, 658, 120);
           o->labelsize(18);
           { Fl_Group* o = new Fl_Group(236, 409, 440, 118);
@@ -712,32 +714,18 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
     { Fl_Group* o = new Fl_Group(20, 14, 680, 364);
       o->box(FL_PLASTIC_DOWN_BOX);
       o->color((Fl_Color)46);
-      { dirTree = new Fl_Tree(40, 37, 330, 278);
+      { dirTree = new Fl_Tree(40, 37, 330, 219);
         dirTree->box(FL_PLASTIC_DOWN_BOX);
         dirTree->labelsize(20);
         dirTree->callback((Fl_Callback*)loadImgFromTree);
         dirTree->when(FL_WHEN_RELEASE);
         dirTree->root_label("Loaded Images");
       } // Fl_Tree* dirTree
-      { btn_loadImg = new Fl_Button(210, 328, 160, 30, "Load New Image");
-        btn_loadImg->box(FL_PLASTIC_THIN_UP_BOX);
-        btn_loadImg->down_box(FL_PLASTIC_THIN_DOWN_BOX);
-        btn_loadImg->labelsize(18);
-        btn_loadImg->callback((Fl_Callback*)chooseFile);
-      } // Fl_Button* btn_loadImg
-      { Fl_Button* o = new Fl_Button(40, 328, 115, 30, "Delete entry");
-        o->box(FL_PLASTIC_THIN_UP_BOX);
-        o->shortcut(0xffff);
-        o->down_box(FL_PLASTIC_THIN_DOWN_BOX);
-        o->labelfont(2);
-        o->labelsize(18);
-        o->callback((Fl_Callback*)removeFileEntry);
-      } // Fl_Button* o
-      { Fl_Group* o = new Fl_Group(380, 222, 310, 136, "Time Statistics");
+      { Fl_Group* o = new Fl_Group(380, 230, 310, 128, "Time Statistics");
         o->box(FL_PLASTIC_DOWN_FRAME);
         o->labelsize(18);
         o->align(Fl_Align(FL_ALIGN_TOP|FL_ALIGN_INSIDE));
-        { lblTotTime = new Fl_Box(390, 317, 280, 33, "0 ms | 0 s | 0 fps");
+        { lblTotTime = new Fl_Box(390, 317, 290, 33, "0 ms | 0 s | 0 fps");
           lblTotTime->box(FL_PLASTIC_ROUND_DOWN_BOX);
           lblTotTime->labelsize(18);
           lblTotTime->align(Fl_Align(FL_ALIGN_CENTER|FL_ALIGN_INSIDE));
@@ -748,11 +736,11 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
         } // Fl_Box* o
         o->end();
       } // Fl_Group* o
-      { Fl_Group* o = new Fl_Group(380, 145, 310, 67, "Change Callback on:");
+      { Fl_Group* o = new Fl_Group(380, 147, 310, 73, "Change Callback on:");
         o->box(FL_PLASTIC_DOWN_FRAME);
         o->labelsize(18);
         o->align(Fl_Align(133|FL_ALIGN_INSIDE));
-        { Fl_Light_Button* o = new Fl_Light_Button(390, 172, 140, 30, "Release");
+        { Fl_Light_Button* o = new Fl_Light_Button(390, 180, 140, 30, "Release");
           o->box(FL_PLASTIC_ROUND_DOWN_BOX);
           o->down_box(FL_PLASTIC_ROUND_DOWN_BOX);
           o->selection_color((Fl_Color)14);
@@ -774,15 +762,42 @@ int __stdcall WinMain(__in HINSTANCE hInstance,__in_opt HINSTANCE hPrevInstance,
           o->box(FL_PLASTIC_THIN_UP_BOX);
           o->down_box(FL_PLASTIC_THIN_DOWN_BOX);
           o->labelsize(18);
+          o->callback((Fl_Callback*)credits);
         } // Fl_Button* o
         o->end();
       } // Fl_Group* o
-      { Fl_Box* o = new Fl_Box(380, 37, 165, 100, "Simple Grape Stem Approximator");
+      { Fl_Box* o = new Fl_Box(380, 37, 165, 100, "Simple Grape\'s Stem Approximator");
         o->box(FL_PLASTIC_DOWN_FRAME);
         o->labelfont(3);
-        o->labelsize(20);
-        o->align(Fl_Align(FL_ALIGN_WRAP|FL_ALIGN_INSIDE));
+        o->labelsize(22);
+        o->align(Fl_Align(132|FL_ALIGN_INSIDE));
       } // Fl_Box* o
+      { Fl_Group* o = new Fl_Group(40, 266, 330, 92);
+        o->box(FL_PLASTIC_DOWN_FRAME);
+        o->labelsize(18);
+        { btn_loadImg = new Fl_Button(205, 276, 155, 30, "Load New Image");
+          btn_loadImg->box(FL_PLASTIC_THIN_UP_BOX);
+          btn_loadImg->down_box(FL_PLASTIC_THIN_DOWN_BOX);
+          btn_loadImg->labelsize(18);
+          btn_loadImg->callback((Fl_Callback*)chooseFile);
+        } // Fl_Button* btn_loadImg
+        { Fl_Button* o = new Fl_Button(50, 276, 145, 30, "Remove picture");
+          o->box(FL_PLASTIC_THIN_UP_BOX);
+          o->shortcut(0xffff);
+          o->down_box(FL_PLASTIC_THIN_DOWN_BOX);
+          o->labelfont(2);
+          o->labelsize(18);
+          o->callback((Fl_Callback*)removeFileEntry);
+        } // Fl_Button* o
+        { btn_saveImg = new Fl_Button(180, 316, 180, 30, "Save final Image as");
+          btn_saveImg->box(FL_PLASTIC_THIN_UP_BOX);
+          btn_saveImg->down_box(FL_PLASTIC_THIN_DOWN_BOX);
+          btn_saveImg->labelsize(18);
+          btn_saveImg->callback((Fl_Callback*)saveImg);
+          btn_saveImg->deactivate();
+        } // Fl_Button* btn_saveImg
+        o->end();
+      } // Fl_Group* o
       o->end();
     } // Fl_Group* o
     window->end();

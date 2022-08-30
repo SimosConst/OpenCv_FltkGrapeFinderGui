@@ -13,6 +13,7 @@ static Fl_Native_File_Chooser* nativeFileChooser = (Fl_Native_File_Chooser*)0;
 static Fl_Box* box_jpeg_image2 = (Fl_Box*)0;
 static Fl_Box* box_jpeg_image = (Fl_Box*)0;
 static Fl_Button* btn_loadImg = (Fl_Button*)0;
+static Fl_Button* btn_saveImg = (Fl_Button*)0;
 static Fl_Value_Slider* sld_preMedian_ksize = (Fl_Value_Slider*)0;
 static Fl_Value_Slider* sld_postMedian_ksize = (Fl_Value_Slider*)0;
 static Fl_Value_Slider* sld_MorphOp_ksize2 = (Fl_Value_Slider*)0;
@@ -221,7 +222,7 @@ static void calc_identifyAndDraw() {
 
     cv::cvtColor(*outImg, gray, cv::COLOR_BGR2GRAY);
     cv::findContours(gray, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
-    
+
     std::vector<std::vector<cv::Point>> hull(contours.size());
     //Find the indexes of the appropriate size contours
     for (size_t i = 0; i < contours.size(); i++)
@@ -238,7 +239,7 @@ static void calc_identifyAndDraw() {
     {
         //GET THE INDEX OF THE FOUND CONTOURS
         auto j = foundIndxs[i];
-        
+
         //FIND AND DRAW CONVEX HULL   
         cv::rectangle(*outImg, foundRects[i], cv::Scalar(180, 90, 90), 2);
         cv::convexHull(contours[j], hull[i]);
@@ -257,7 +258,7 @@ static void calc_identifyAndDraw() {
         cv::putText(
             *outImg,
             "Around: (" + std::to_string(midPoint) + ',' + std::to_string(foundRects[i].y) + ')',
-            point2, cv::FONT_HERSHEY_SIMPLEX, .5, cv::Scalar(200, 200, 220), 1 ,1
+            point2, cv::FONT_HERSHEY_SIMPLEX, .5, cv::Scalar(200, 200, 220), 1, 1
         );
     }
 }
@@ -289,7 +290,7 @@ static Fl_RGB_Image* Mat2FlRgbImg(cv::Mat mat, bool newImg = false) {
             tmpImgBuffer[i3] = mat.data[i1];
         }
     }
-    else if(mat.channels()==1) {
+    else if (mat.channels() == 1) {
         for (int i = 0; i < maxLength; i++) {
             tmpImgBuffer[i] = mat.data[i];
         }
@@ -339,6 +340,11 @@ std::string getTabName(ActiveTab tab) {
             break;
     }
 }
+
+static bool isImgLoaded() {
+    return (outImg->rows > 0 && outImg->cols > 0);
+}
+
 #pragma endregion
 
 #pragma region CallBackFunctions
@@ -387,6 +393,7 @@ static void drawNewImage(bool init_load = false) {
 
         FinImage = Mat2FlRgbImg(*outImg, init_load);
         box_jpeg_image2->image(FinImage);
+        btn_saveImg->activate();
         window->redraw();
     }
 }
@@ -425,6 +432,7 @@ static void drawInitialImage() {
 static void clearImgViews() {
     box_jpeg_image->image((Fl_RGB_Image*)0);
     box_jpeg_image2->image((Fl_RGB_Image*)0);
+    btn_saveImg->deactivate();
 
     //FileName = ""; drawInitialImage();
     window->redraw();
@@ -561,6 +569,46 @@ static void chooseFile() {
     loadingInterval();
 }
 
+static void saveImg() {
+    //Skip if Image Not Loaded
+    if (!isImgLoaded()) return;
+    loadingInterval(true);
+    auto fnfc = *nativeFileChooser;
+    fnfc.title("Choose a directory to save the Image");
+    fnfc.options(Fl_Native_File_Chooser::SAVEAS_CONFIRM);
+    fnfc.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
+    fnfc.filter("Images\t*.{jpeg}");
+    fnfc.directory("/var/tmp");           // default directory to use
+
+    // Show native chooser
+    switch (fnfc.show()) {
+        case -1: printf("ERROR: %s\n", fnfc.errmsg());    break;  // ERROR
+        case  1: printf("CANCEL\n");                      break;  // CANCEL
+        default:
+            printf("PICKED: %s\n", fnfc.filename());
+            FileName = fnfc.filename();
+            uchar a = FileName.find('.');
+            if (a > FileName.length()) { FileName = FileName + ".jpeg"; }
+
+            std::vector<int> params;
+            params.push_back(cv::IMWRITE_JPEG_QUALITY); params.push_back(85);
+            params.push_back(cv::IMWRITE_JPEG_OPTIMIZE); params.push_back(1);
+            
+            try {
+                cv::imwrite(FileName, *outImg, params);
+                auto filename = std::string(dirTree->first_selected_item()->label());
+                fl_alert(std::string("File Saved as: " + filename).c_str());
+            }
+            catch (const std::exception&)
+            {
+                Fl::error("File Save Error, Check file extension");
+            }
+            break;  // FILE CHOSEN
+    }
+
+    loadingInterval();
+}
+
 static void switchVisibility(Fl_Button* chk) {
 
     tmp_active = chk->value();
@@ -588,6 +636,10 @@ static void tabChange(Fl_Tabs* a) {
     else if (str == "Ensemble 2") currentTab = ActiveTab::Tab2;
 
     drawNewImage();
+}
+
+static void credits() {
+    fl_message("Symeon Constantinidis | Spring 2022");
 }
 
 #pragma endregion
