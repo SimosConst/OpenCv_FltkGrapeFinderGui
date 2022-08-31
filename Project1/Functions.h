@@ -39,6 +39,19 @@ static Fl_Check_Button* chk_threshImg_enable_2 = (Fl_Check_Button*)0;
 static Fl_Check_Button* chk_identification_1 = (Fl_Check_Button*)0;
 static Fl_Check_Button* chk_identification_2 = (Fl_Check_Button*)0;
 
+#pragma region Ensemble3
+static Fl_Choice* drp_AHThresh_ThrshType = (Fl_Choice*)0;
+static Fl_Choice* drp_AHThresh_AThrshType = (Fl_Choice*)0;
+static Fl_Check_Button* chk_preMedian_enable2 = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_AHThresh_enable = (Fl_Check_Button*)0;
+static Fl_Check_Button* chk_identification_3 = (Fl_Check_Button*)0;
+static Fl_Value_Slider* sld_preMedian_ksize2 = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_AHThresh_BlkSz = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_AHThresh_C = (Fl_Value_Slider*)0;
+static Fl_Box* lblAHThresh = (Fl_Box*)0;
+static Fl_Box* lblIdentification_3 = (Fl_Box*)0;
+static Fl_Box* lblPreMedian2 = (Fl_Box*)0;
+#pragma endregion
 
 //Arrays
 //static Fl_Value_Slider* sldArr[] = {sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1};
@@ -96,8 +109,20 @@ static Fl_Menu_Item menu_drp_MorphOp_Op[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+static Fl_Menu_Item menu_drp_ThreshTypes[] = {
+ {"BINARY    ", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"BINARY_INV", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
+static Fl_Menu_Item menu_drp_AdaptThreshTypes[] = {
+ {"ADAPTIVE_THRESH_MEAN_C", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {"ADAPTIVE_THRESH_GAUSSIAN_C", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 2, 14, 0},
+ {0,0,0,0,0,0,0,0,0}
+};
+
 //LABELS
-static Fl_Box* lblPreMedian = (Fl_Box*)0;
+static Fl_Box* lblPreMedian1 = (Fl_Box*)0;
 static Fl_Box* lblMorphOp1 = (Fl_Box*)0;
 static Fl_Box* lblMorphOp2 = (Fl_Box*)0;
 static Fl_Box* lblPostMedian = (Fl_Box*)0;
@@ -176,32 +201,29 @@ static inline void mix_channels(cv::Mat const& src, cv::Mat& dst, std::initializ
     cv::mixChannels(&src, 1, &dst, 1, std::begin(from_to), from_to.size() / 2);
 }
 
-static void calc_FindthreshImg(Fl_Value_Slider* sld_thrshLow, Fl_Value_Slider* sld_thrshHigh) {
+static void calc_HueRangeImg(Fl_Value_Slider* sld_thrshLow, Fl_Value_Slider* sld_thrshHigh) {
     uchar lowerBound = sld_thrshLow->value(), upperBound = sld_thrshHigh->value();
-    //std::vector<std::vector<cv::Point>> contours;
-    ////std::vector <cv::Point> contours;
-    //std::vector<cv::Vec4i> hierarchy;
-    ////Get the grayscale Image //cv::split
-    //mix_channels(threshImg, hue, { 0, 0 });
     cv::Mat threshImg;
 
     cv::cvtColor(*outImg, threshImg, cv::COLOR_BGR2HSV);
     cv::inRange(threshImg, cv::Scalar(lowerBound, 0, 0), cv::Scalar(upperBound, 255, 255), threshImg);
 
-    //cv::threshold(hue, hue, sld_thrshLow->value(), sld_thrshHigh->value(), cv::THRESH_BINARY);
-    //threshImg(cv::Range(0, 0)); cv::Mat::zeros(outImg->size(), CV_8UC3);
-    //cv::cvtColor(threshImg, *outImg, cv::COLOR_HSV2BGR);
-    ////cv::threshold(threshImg, threshImg, sld_thrshLow->value(), 255, cv::THRESH_BINARY);
-    //////cv::Canny(threshImg, threshImg, sld_thrshLow->value(), sld_thrshLow->value() * 2);
-    ////cv::findContours(threshImg, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE
-    ////cv::Mat drawing = cv::Mat::zeros(outImg->size(), CV_8UC3);
-    //////cv::fillPoly(drawing, contours, cv::Scalar(230, 220, 200), cv::LINE_8);
-    ////cv::fillPoly(drawing, contours, cv::Scalar(255,255,255));
-    ////cv::bitwise_and(*outImg, drawing, *outImg);
-
     cv::cvtColor(threshImg, threshImg, cv::COLOR_GRAY2BGR);
     cv::bitwise_and(threshImg, *outImg, *outImg);
     //threshImg.copyTo(*outImg);
+}
+
+static void calc_AdaptHueThreshImg(Fl_Value_Slider* sldBlkSz, Fl_Value_Slider* sldC, Fl_Choice* drpAdaptThresh, Fl_Choice* drpThreshType) {
+    cv::Mat channels[3], hsvImage;
+
+    //Convert to HSV
+    cv::cvtColor(*outImg, hsvImage, cv::COLOR_BGR2HSV);
+    //Get Hue channel
+    cv::split(hsvImage, channels);
+
+    cv::adaptiveThreshold(channels[0], channels[0], 255, drpAdaptThresh->value(), drpThreshType->value(), sldBlkSz->value(), sldC->value());
+    cv::cvtColor(channels[0], channels[0], cv::COLOR_GRAY2BGR);
+    cv::bitwise_and(channels[0], *outImg, *outImg);
 }
 
 static void calc_BilatFiltr(Fl_Value_Slider* sld_d, Fl_Value_Slider* sld_sc, Fl_Value_Slider* sld_ss) {
@@ -313,7 +335,8 @@ static void changeCBType(bool onrelease) {
         sld_MorphOp_ksize2, sld_MorphOp_ksize1,
         sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace,
         sld_thrsh_low_1, sld_thrsh_high_1,
-        sld_thrsh_low_2, sld_thrsh_high_2
+        sld_thrsh_low_2, sld_thrsh_high_2,
+        sld_preMedian_ksize2 ,sld_AHThresh_BlkSz, sld_AHThresh_C
     };
 
     uchar sz = sizeof(sldArr) / 4;
@@ -357,20 +380,26 @@ static void caseCalc() {
     switch (currentTab)
     {
         case Tab1:
-            if (chk_preMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize); stepTimer.end(); fillTimer(lblPreMedian); }
+            if (chk_preMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize); stepTimer.end(); fillTimer(lblPreMedian1); }
             if (chk_MorphOp_enable1->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1); stepTimer.end(); fillTimer(lblMorphOp1); }
             if (chk_MorphOp_enable2->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2); stepTimer.end(); fillTimer(lblMorphOp2); }
             if (chk_postMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize); stepTimer.end(); fillTimer(lblPostMedian); }
-            if (chk_threshImg_enable_1->value()) { stepTimer.start(); calc_FindthreshImg(sld_thrsh_low_1, sld_thrsh_high_1); stepTimer.end(); fillTimer(lblthreshImg_1); }
+            if (chk_threshImg_enable_1->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_1, sld_thrsh_high_1); stepTimer.end(); fillTimer(lblthreshImg_1); }
 
             if (chk_identification_1->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
 
             break;
         case Tab2:
             if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
-            if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_FindthreshImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
+            if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
 
-            if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
+            if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_2); }
+            break;
+        case Tab3:
+            if (chk_preMedian_enable2->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize2); stepTimer.end(); fillTimer(lblPreMedian2); }
+            if (chk_AHThresh_enable->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz, sld_AHThresh_C, drp_AHThresh_AThrshType, drp_AHThresh_ThrshType); stepTimer.end(); fillTimer(lblAHThresh); }
+
+            if (chk_identification_3->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_3); }
 
             break;
     }
@@ -593,16 +622,13 @@ static void saveImg() {
             std::vector<int> params;
             params.push_back(cv::IMWRITE_JPEG_QUALITY); params.push_back(85);
             params.push_back(cv::IMWRITE_JPEG_OPTIMIZE); params.push_back(1);
-            
+
             try {
-                cv::imwrite(FileName, *outImg, params);
+                cv::imwrite(FileName, *outImg, params); 
                 auto filename = std::string(dirTree->first_selected_item()->label());
-                fl_alert(std::string("File Saved as: " + filename).c_str());
+                fl_alert(std::string("File Saved as: " + FileName).c_str());
             }
-            catch (const std::exception&)
-            {
-                Fl::error("File Save Error, Check file extension");
-            }
+            catch (const std::exception&) { Fl::error("File Save Error, Check file extension"); }
             break;  // FILE CHOSEN
     }
 
@@ -634,6 +660,7 @@ static void tabChange(Fl_Tabs* a) {
 
     if (str == "Ensemble 1") currentTab = ActiveTab::Tab1;
     else if (str == "Ensemble 2") currentTab = ActiveTab::Tab2;
+    else if (str == "Ensemble 3") currentTab = ActiveTab::Tab3;
 
     drawNewImage();
 }

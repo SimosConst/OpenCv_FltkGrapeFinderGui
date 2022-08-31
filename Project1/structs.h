@@ -42,7 +42,7 @@ public:
 
     //Requires static declaration | Stores the passed variable
     StringList(std::string strList[]) {
-        
+
         uchar i = 0; while (!strList[i].empty()) ++i;
 
         this->maxLength = i;
@@ -163,6 +163,5 @@ public:
 };
 
 enum ActiveTab {
-    Tab1,
-    Tab2
+    Tab1, Tab2, Tab3
 };
