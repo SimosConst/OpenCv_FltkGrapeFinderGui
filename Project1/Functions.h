@@ -39,7 +39,7 @@ static Fl_Check_Button* chk_threshImg_enable_2 = (Fl_Check_Button*)0;
 static Fl_Check_Button* chk_identification_1 = (Fl_Check_Button*)0;
 static Fl_Check_Button* chk_identification_2 = (Fl_Check_Button*)0;
 
-#pragma region Ensemble3
+#pragma region Ensemble2
 static Fl_Choice* drp_AHThresh_ThrshType = (Fl_Choice*)0;
 static Fl_Choice* drp_AHThresh_AThrshType = (Fl_Choice*)0;
 static Fl_Check_Button* chk_preMedian_enable2 = (Fl_Check_Button*)0;
@@ -53,9 +53,33 @@ static Fl_Box* lblIdentification_3 = (Fl_Box*)0;
 static Fl_Box* lblPreMedian2 = (Fl_Box*)0;
 #pragma endregion
 
-//Arrays
-//static Fl_Value_Slider* sldArr[] = {sld_preMedian_ksize, sld_postMedian_ksize, sld_MorphOp_ksize2, sld_MorphOp_ksize1};
-//static Fl_Check_Button* tmp_chkBtn;																  
+#pragma region Ensemble4
+static Fl_Value_Slider* sld_preMedian_ksize4 = (Fl_Value_Slider*)0;
+static Fl_Check_Button* chk_preMedian_enable4 = (Fl_Check_Button*)0;
+static Fl_Box* lblPreMedian4 = (Fl_Box*)0;
+static Fl_Value_Slider* sld_MorphOp_ksize41 = (Fl_Value_Slider*)0;
+static Fl_Choice* drp_MorphOp_Shape41 = (Fl_Choice*)0;
+static Fl_Choice* drp_MorphOp_Op41 = (Fl_Choice*)0;
+static Fl_Check_Button* chk_MorphOp_enable41 = (Fl_Check_Button*)0;
+static Fl_Box* lblMorphOp41 = (Fl_Box*)0;
+static Fl_Value_Slider* sld_MorphOp_ksize42 = (Fl_Value_Slider*)0;
+static Fl_Choice* drp_MorphOp_Shape42 = (Fl_Choice*)0;
+static Fl_Choice* drp_MorphOp_Op42 = (Fl_Choice*)0;
+static Fl_Check_Button* chk_MorphOp_enable42 = (Fl_Check_Button*)0;
+static Fl_Box* lblMorphOp42 = (Fl_Box*)0;
+static Fl_Value_Slider* sld_postMedian_ksize4 = (Fl_Value_Slider*)0;
+static Fl_Check_Button* chk_postMedian_enable4 = (Fl_Check_Button*)0;
+static Fl_Box* lblPostMedian4 = (Fl_Box*)0;
+static Fl_Check_Button* chk_identification_4 = (Fl_Check_Button*)0;
+static Fl_Box* lblIdentification_4 = (Fl_Box*)0;
+static Fl_Choice* drp_AHThresh_ThrshType4 = (Fl_Choice*)0;
+static Fl_Choice* drp_AHThresh_AThrshType4 = (Fl_Choice*)0;
+static Fl_Value_Slider* sld_AHThresh_BlkSz4 = (Fl_Value_Slider*)0;
+static Fl_Value_Slider* sld_AHThresh_C4 = (Fl_Value_Slider*)0;
+static Fl_Check_Button* chk_AHThresh_enable4 = (Fl_Check_Button*)0;
+static Fl_Box* lblAHThresh4 = (Fl_Box*)0;
+#pragma endregion
+
 
 static std::string tmp_groupName;
 static bool tmp_active;
@@ -79,9 +103,7 @@ static short newWidth = maxWidth, newHeight = maxHeight;
 
 //DIRECTORY TREE VARS
 static const short dirTreeMaxItemCount = 20;
-//static std::vector<std::string> dirTreeFileNames;
-//static std::string* dirTreeFileNamesList = new std::string[dirTreeMaxItemCount];
-//static unsigned char DTNLstCap = 0;
+
 static StringList* dirStringList = new StringList(dirTreeMaxItemCount);
 
 
@@ -336,9 +358,17 @@ static void changeCBType(bool onrelease) {
         sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace,
         sld_thrsh_low_1, sld_thrsh_high_1,
         sld_thrsh_low_2, sld_thrsh_high_2,
-        sld_preMedian_ksize2 ,sld_AHThresh_BlkSz, sld_AHThresh_C
-    };
 
+        //Ensemble 2
+        sld_preMedian_ksize2 ,
+        sld_AHThresh_BlkSz, sld_AHThresh_C,
+
+        //Ensemble 4
+        sld_preMedian_ksize4,
+        sld_MorphOp_ksize41, sld_MorphOp_ksize42,
+        sld_postMedian_ksize4,
+        sld_AHThresh_BlkSz4, sld_AHThresh_C4,
+    };
     uchar sz = sizeof(sldArr) / 4;
     for (size_t i = 0; i < sz; i++)
     {
@@ -380,6 +410,12 @@ static void caseCalc() {
     switch (currentTab)
     {
         case Tab1:
+            if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
+            if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
+
+            if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_2); }
+            break;
+        case Tab2:
             if (chk_preMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize); stepTimer.end(); fillTimer(lblPreMedian1); }
             if (chk_MorphOp_enable1->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1); stepTimer.end(); fillTimer(lblMorphOp1); }
             if (chk_MorphOp_enable2->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2); stepTimer.end(); fillTimer(lblMorphOp2); }
@@ -389,12 +425,7 @@ static void caseCalc() {
             if (chk_identification_1->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
 
             break;
-        case Tab2:
-            if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
-            if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
 
-            if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_2); }
-            break;
         case Tab3:
             if (chk_preMedian_enable2->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize2); stepTimer.end(); fillTimer(lblPreMedian2); }
             if (chk_AHThresh_enable->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz, sld_AHThresh_C, drp_AHThresh_AThrshType, drp_AHThresh_ThrshType); stepTimer.end(); fillTimer(lblAHThresh); }
@@ -402,6 +433,17 @@ static void caseCalc() {
             if (chk_identification_3->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_3); }
 
             break;
+        case Tab4:
+            if (chk_preMedian_enable4->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize4); stepTimer.end(); fillTimer(lblPreMedian4); }
+            if (chk_MorphOp_enable41->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize41, drp_MorphOp_Shape41, drp_MorphOp_Op41); stepTimer.end(); fillTimer(lblMorphOp41); }
+            if (chk_MorphOp_enable42->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize42, drp_MorphOp_Shape42, drp_MorphOp_Op42); stepTimer.end(); fillTimer(lblMorphOp42); }
+            if (chk_postMedian_enable4->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize4); stepTimer.end(); fillTimer(lblPostMedian4); }
+            if (chk_AHThresh_enable4->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz4, sld_AHThresh_C4, drp_AHThresh_AThrshType4, drp_AHThresh_ThrshType4); stepTimer.end(); fillTimer(lblAHThresh4); }
+
+            if (chk_identification_4->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_4); }
+
+            break;
+
     }
 
     float ms = (float)totTimer / 1000;
@@ -467,10 +509,7 @@ static void clearImgViews() {
     window->redraw();
 }
 
-/*
-toggle: true, start interval
-toggle: false, stop
-*/
+
 static void loadingInterval(bool toggle = false) {
     auto a = box_jpeg_image->parent();
     auto txt = toggle ? loadingTxt : NULL;
@@ -624,7 +663,7 @@ static void saveImg() {
             params.push_back(cv::IMWRITE_JPEG_OPTIMIZE); params.push_back(1);
 
             try {
-                cv::imwrite(FileName, *outImg, params); 
+                cv::imwrite(FileName, *outImg, params);
                 auto filename = std::string(dirTree->first_selected_item()->label());
                 fl_alert(std::string("File Saved as: " + FileName).c_str());
             }
@@ -661,6 +700,7 @@ static void tabChange(Fl_Tabs* a) {
     if (str == "Ensemble 1") currentTab = ActiveTab::Tab1;
     else if (str == "Ensemble 2") currentTab = ActiveTab::Tab2;
     else if (str == "Ensemble 3") currentTab = ActiveTab::Tab3;
+    else if (str == "Ensemble 4") currentTab = ActiveTab::Tab4;
 
     drawNewImage();
 }
@@ -673,25 +713,3 @@ static void credits() {
 
 
 #endif
-
-
-//static void resizeImage(cv::Mat* img);
-//
-//static void changeImgData();
-//
-//static void calcPre_MedianFiltr();
-//
-//static void drawImage2(Fl_Box* imgFrame);
-//
-//static void caseCalc();
-//
-//static void drawNewImage(bool init_load);
-//
-//static void sliderOddVal(Fl_Valuator* btn);
-//
-//static void drawInitialImage();
-//
-// void chooseFile();
-//
-// void switchVisibility(Fl_Button* chk);
-//

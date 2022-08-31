@@ -163,5 +163,5 @@ public:
 };
 
 enum ActiveTab {
-    Tab1, Tab2, Tab3
+    Tab1, Tab2, Tab3, Tab4
 };
