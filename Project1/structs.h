@@ -152,7 +152,7 @@ public:
         funcList = fList;
         count = c;
     }
-    void excec() {
+    void exec() {
         for (size_t i = 0; i < count; i++)
         {
             if (caseList[i]) {

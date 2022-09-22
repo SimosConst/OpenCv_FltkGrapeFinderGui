@@ -40,171 +40,171 @@ Fl::background(238, 240, 241);} {}
     }
     Fl_Tabs tabPane {
       callback tabChange open
-      private xywh {16 401 694 562} box PLASTIC_THIN_UP_BOX color 48 when 1
+      private xywh {17 387 694 579} box PLASTIC_THIN_UP_BOX color 48 when 1
     } {
       Fl_Scroll {} {
         label {Ensemble 1}
-        private xywh {22 404 681 398} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
+        private xywh {18 390 681 398} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18
       } {
         Fl_Group {} {open
-          xywh {26 414 658 120} labelsize 18
+          xywh {22 400 658 120} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {234 414 440 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {230 400 440 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {239 419 435 71} labelsize 18
+              xywh {235 405 435 71} labelsize 18
             } {
               Fl_Value_Slider sld_preBilateral_d {
                 label {Pixel diameter:}
                 callback drawNewImage
-                private xywh {244 449 124 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 15 textsize 18
+                private xywh {240 435 124 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 15 textsize 18
               }
               Fl_Value_Slider sld_preBilateral_sCol {
                 label {Sigma Color:}
                 callback drawNewImage
-                private xywh {384 449 133 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 80 step 0.1 value 50 textsize 18
+                private xywh {380 435 133 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 80 step 0.1 value 50 textsize 18
               }
               Fl_Value_Slider sld_preBilateral_sSpace {
                 label {Sigma Space:}
                 callback drawNewImage
-                private xywh {533 449 131 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 80 step 0.1 value 50 textsize 18
+                private xywh {529 435 131 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 80 step 0.1 value 50 textsize 18
               }
             }
             Fl_Check_Button chk_preBilateral_enable {
               label {Bilateral Blur (Pre)} user_data_type {void*}
               callback switchVisibility
-              private xywh {458 492 206 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {454 478 206 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {1. Initial bluring (Bilateral)}
-            xywh {34 415 190 50} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {30 401 190 50} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblPreBilat {
             label {0 ms}
-            private xywh {124 504 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {120 490 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {26 549 653 171} labelsize 18
+          xywh {22 535 653 171} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {234 549 445 166} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {230 535 445 166} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {244 559 435 123} labelsize 18
+              xywh {240 545 435 123} labelsize 18
             } {
               Fl_Value_Slider sld_thrsh_low_2 {
                 label {Lower Threshold}
                 callback drawNewImage
-                private tooltip {The lower value threshold} xywh {249 559 420 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 maximum 255 step 1 value 25 slider_size 1 textfont 2 textsize 18 textcolor 32
+                private tooltip {The lower value threshold} xywh {245 545 420 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 maximum 255 step 1 value 25 slider_size 1 textfont 2 textsize 18 textcolor 32
               }
               Fl_Value_Slider sld_thrsh_high_2 {
                 label {High Threshold}
                 callback drawNewImage
-                private tooltip {The lower value threshold} xywh {249 623 420 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 minimum 1 maximum 255 step 1 value 255 slider_size 1 textfont 2 textsize 18 textcolor 32
+                private tooltip {The lower value threshold} xywh {245 609 420 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 minimum 1 maximum 255 step 1 value 255 slider_size 1 textfont 2 textsize 18 textcolor 32
               }
             }
             Fl_Check_Button chk_threshImg_enable_2 {
               label {Hue Isolation} user_data_type {void*}
               callback switchVisibility
-              private xywh {517 675 156 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {513 661 156 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {2. Hue thresholding }
-            xywh {34 549 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {30 535 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblthreshImg_2 {
             label {0 ms}
-            private xywh {125 685 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {121 671 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {26 725 656 65} labelsize 18
+          xywh {22 711 656 65} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {234 725 220 65} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {230 711 220 65} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {
-              xywh {258 750 15 15} labelsize 18
+              xywh {254 736 15 15} labelsize 18
             } {}
             Fl_Check_Button chk_identification_2 {
               label Identification user_data_type {void*}
               callback switchVisibility
-              private xywh {244 747 200 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {240 733 200 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {3. Identification}
-            xywh {32 725 193 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 711 193 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblIdentification_2 {
             label {0 ms}
-            private xywh {124 760 101 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {120 746 101 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
       }
       Fl_Scroll {} {
-        label {Ensemble 2} selected
-        private xywh {20 404 680 520} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18
+        label {Ensemble 2}
+        private xywh {16 390 680 530} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
       } {
         Fl_Group {} {open
-          xywh {32 414 656 120} labelsize 18
+          xywh {28 400 656 120} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 414 446 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 400 446 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {235 419 431 71} labelsize 18
+              xywh {231 405 431 71} labelsize 18
             } {
               Fl_Value_Slider sld_preMedian_ksize {
                 label {Kernel Size:}
                 callback sliderOddVal
-                private xywh {240 449 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {236 435 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
             }
             Fl_Check_Button chk_preMedian_enable {
               label {Median Blur (Pre)} user_data_type {void*}
               callback switchVisibility
-              private xywh {240 492 199 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {236 478 199 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {1. Initial bluring}
-            xywh {32 415 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 401 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblPreMedian1 {
             label {0 ms}
-            private xywh {122 504 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {118 490 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {32 543 656 148} labelsize 18
+          xywh {28 529 656 148} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 543 446 140} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 529 446 140} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {236 543 430 140} labelsize 18
+              xywh {232 529 430 140} labelsize 18
             } {
               Fl_Value_Slider sld_MorphOp_ksize1 {
                 label {Kernel Size:}
                 callback drawNewImage
-                private xywh {504 637 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 7 textsize 18
+                private xywh {500 623 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 7 textsize 18
               }
               Fl_Choice drp_MorphOp_Shape1 {
                 label {Morphology Shape}
                 callback drawNewImage open
-                private xywh {240 575 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {236 561 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Shape1->menu(menu_drp_MorphOp_Shape);}
                 code2 {drp_MorphOp_Shape1->value(0);}
               } {}
               Fl_Choice drp_MorphOp_Op1 {
                 label {Morphology Operation}
                 callback drawNewImage open
-                private xywh {464 575 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {460 561 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Op1->menu(menu_drp_MorphOp_Op);}
                 code2 {drp_MorphOp_Op1->value(2);}
               } {}
@@ -212,43 +212,43 @@ Fl::background(238, 240, 241);} {}
             Fl_Check_Button chk_MorphOp_enable1 {
               label {Morphology Operation 1} user_data_type {void*}
               callback switchVisibility
-              private xywh {236 636 256 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {232 622 256 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {2. First Morphology operation}
-            xywh {32 543 190 54} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 529 190 54} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblMorphOp1 {
             label {0 ms}
-            private xywh {119 653 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {115 639 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {32 691 656 135} labelsize 18
+          xywh {28 677 656 135} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 691 446 135} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 677 446 135} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {232 691 431 135} labelsize 18
+              xywh {228 677 431 135} labelsize 18
             } {
               Fl_Value_Slider sld_MorphOp_ksize2 {
                 label {Kernel Size:}
                 callback drawNewImage
-                private xywh {501 785 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {497 771 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
               Fl_Choice drp_MorphOp_Shape2 {
                 label {Morphology Shape}
                 callback drawNewImage open
-                private xywh {237 723 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {233 709 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Shape2->menu(menu_drp_MorphOp_Shape);}
                 code2 {drp_MorphOp_Shape2->value(0);}
               } {}
               Fl_Choice drp_MorphOp_Op2 {
                 label {Morphology Operation}
                 callback drawNewImage open
-                private xywh {461 723 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {457 709 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Op2->menu(menu_drp_MorphOp_Op);}
                 code2 {drp_MorphOp_Op2->value(3);}
               } {}
@@ -256,275 +256,275 @@ Fl::background(238, 240, 241);} {}
             Fl_Check_Button chk_MorphOp_enable2 {
               label {Morphology Operation 2} user_data_type {void*}
               callback switchVisibility
-              private xywh {235 784 259 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {231 770 259 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {3. Second Morphology operation}
-            xywh {32 691 190 55} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 677 190 55} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblMorphOp2 {
             label {0 ms}
-            private xywh {121 796 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {117 782 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {32 836 656 110} labelsize 18
+          xywh {28 822 656 110} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 836 448 110} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 822 448 110} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {232 840 436 66} labelsize 18
+              xywh {228 826 436 66} labelsize 18
             } {
               Fl_Value_Slider sld_postMedian_ksize {
                 label {Kernel Size:}
                 callback sliderOddVal
-                private xywh {240 868 426 30} type Horizontal box PLASTIC_DOWN_BOX color 47 selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {236 854 426 30} type Horizontal box PLASTIC_DOWN_BOX color 47 selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
             }
             Fl_Check_Button chk_postMedian_enable {
               label {Median Blur (Post)} user_data_type {void*}
               callback switchVisibility
-              private xywh {240 908 203 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {236 894 203 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {4. Final bluring}
-            xywh {32 836 190 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 822 190 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblPostMedian {
             label {0 ms}
-            private xywh {128 916 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {124 902 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {32 954 656 166} labelsize 18
+          xywh {28 940 656 166} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 954 444 166} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 940 444 166} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {233 964 433 123} labelsize 18
+              xywh {229 950 433 123} labelsize 18
             } {
               Fl_Value_Slider sld_thrsh_low_1 {
                 label {Lower Threshold}
                 callback drawNewImage
-                private tooltip {The lower value threshold} xywh {243 964 423 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 maximum 255 step 1 value 25 slider_size 1 textfont 2 textsize 18 textcolor 32
+                private tooltip {The lower value threshold} xywh {239 950 423 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 maximum 255 step 1 value 25 slider_size 1 textfont 2 textsize 18 textcolor 32
               }
               Fl_Value_Slider sld_thrsh_high_1 {
                 label {High Threshold}
                 callback drawNewImage
-                private tooltip {The lower value threshold} xywh {243 1028 423 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 minimum 1 maximum 255 step 1 value 255 slider_size 1 textfont 2 textsize 18 textcolor 32
+                private tooltip {The lower value threshold} xywh {239 1014 423 32} type {Horz Fill} box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 6 when 4 minimum 1 maximum 255 step 1 value 255 slider_size 1 textfont 2 textsize 18 textcolor 32
               }
             }
             Fl_Check_Button chk_threshImg_enable_1 {
               label {Hue Isolation} user_data_type {void*}
               callback switchVisibility
-              private xywh {241 1083 159 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {237 1069 159 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {5. Hue thresholding }
-            xywh {32 954 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 940 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblthreshImg_1 {
             label {0 ms}
-            private xywh {131 1090 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {127 1076 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {30 1130 658 95} labelsize 18
+          xywh {26 1116 658 95} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 1140 438 75} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 1126 438 75} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {
-              xywh {256 1140 15 75} labelsize 18
+              xywh {252 1126 15 75} labelsize 18
             } {}
             Fl_Check_Button chk_identification_1 {
               label Identification user_data_type {void*}
               callback switchVisibility
-              private xywh {242 1170 157 35} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {238 1156 157 35} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {6. Identification}
-            xywh {32 1140 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 1126 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblIdentification_1 {
             label {0 ms}
-            private xywh {127 1185 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {123 1171 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
       }
       Fl_Scroll {} {
         label {Ensemble 3}
-        private xywh {20 404 683 491} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
+        private xywh {16 390 683 491} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
       } {
         Fl_Group {} {open
-          xywh {28 551 647 261} labelsize 18
+          xywh {24 537 647 261} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {230 551 445 254} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {226 537 445 254} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {239 561 436 191} labelsize 18
+              xywh {235 547 436 191} labelsize 18
             } {
               Fl_Choice drp_AHThresh_ThrshType {
                 label {Threshold Type}
                 callback drawNewImage open
-                private xywh {240 583 165 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {236 569 165 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_AHThresh_ThrshType->menu(menu_drp_ThreshTypes);}
                 code2 {drp_AHThresh_ThrshType->value(0);}
               } {}
               Fl_Choice drp_AHThresh_AThrshType {
                 label {Adaptive Threshold Type}
                 callback drawNewImage open
-                private xywh {415 583 250 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {411 569 250 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_AHThresh_AThrshType->menu(menu_drp_AdaptThreshTypes);}
                 code2 {drp_AHThresh_AThrshType->value(0);}
               } {}
               Fl_Value_Slider sld_AHThresh_BlkSz {
                 label {Block Size}
                 callback sliderOddVal
-                private xywh {239 645 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 3 maximum 450 step 1 value 3 textsize 18
+                private xywh {235 631 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 3 maximum 450 step 1 value 3 textsize 18
               }
               Fl_Value_Slider sld_AHThresh_C {
                 label {Constant c}
                 callback drawNewImage
-                private xywh {239 707 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum -150 maximum 150 step 1 value 3 textsize 18
+                private xywh {235 693 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum -150 maximum 150 step 1 value 3 textsize 18
               }
             }
             Fl_Check_Button chk_AHThresh_enable {
               label {Adaptive Hue Isolation} user_data_type {void*}
               callback switchVisibility
-              private xywh {425 762 240 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {421 748 240 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {2. Adaptive Hue Thresholding }
-            xywh {30 551 190 48} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {26 537 190 48} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblAHThresh {
             label {0 ms}
-            private xywh {120 764 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {116 750 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {26 815 649 65} labelsize 18
+          xywh {22 801 649 65} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {227 815 220 65} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {223 801 220 65} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {
-              xywh {251 840 15 15} labelsize 18
+              xywh {247 826 15 15} labelsize 18
             } {}
             Fl_Check_Button chk_identification_3 {
               label Identification user_data_type {void*}
               callback switchVisibility
-              private xywh {237 837 200 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {233 823 200 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {3. Identification}
-            xywh {26 815 192 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {22 801 192 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblIdentification_3 {
             label {0 ms}
-            private xywh {117 850 101 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {113 836 101 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {27 414 658 120} labelsize 18
+          xywh {23 400 658 120} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {229 414 446 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {225 400 446 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {232 419 431 71} labelsize 18
+              xywh {228 405 431 71} labelsize 18
             } {
               Fl_Value_Slider sld_preMedian_ksize2 {
                 label {Kernel Size:}
                 callback sliderOddVal
-                private xywh {237 449 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {233 435 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
             }
             Fl_Check_Button chk_preMedian_enable2 {
               label {Median Blur (Pre)} user_data_type {void*}
               callback switchVisibility
-              private xywh {237 492 199 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {233 478 199 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {1. Initial bluring}
-            xywh {27 415 192 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {23 401 192 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblPreMedian2 {
             label {0 ms}
-            private xywh {119 504 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {115 490 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
       }
       Fl_Scroll {} {
-        label {Ensemble 4} selected
-        private xywh {20 404 680 520} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
+        label {Ensemble 4}
+        private xywh {16 390 680 530} type VERTICAL box PLASTIC_DOWN_BOX color 47 labelsize 18 hide
       } {
         Fl_Group {} {
-          xywh {32 414 656 120} labelsize 18
+          xywh {28 400 656 120} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 414 446 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 400 446 118} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {235 419 431 71} labelsize 18
+              xywh {231 405 431 71} labelsize 18
             } {
               Fl_Value_Slider sld_preMedian_ksize4 {
                 label {Kernel Size:}
                 callback sliderOddVal
-                private xywh {240 449 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {236 435 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
             }
             Fl_Check_Button chk_preMedian_enable4 {
               label {Median Blur (Pre)} user_data_type {void*}
               callback switchVisibility
-              private xywh {240 492 199 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {236 478 199 30} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {1. Initial bluring}
-            xywh {32 415 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 401 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblPreMedian4 {
             label {0 ms}
-            private xywh {122 504 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {118 490 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
-        Fl_Group {} {
-          xywh {32 543 656 148} labelsize 18
+        Fl_Group {} {open
+          xywh {28 529 656 148} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 543 446 140} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 529 446 140} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {236 543 430 140} labelsize 18
+              xywh {232 529 430 140} labelsize 18
             } {
               Fl_Value_Slider sld_MorphOp_ksize41 {
                 label {Kernel Size:}
                 callback drawNewImage
-                private xywh {504 637 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 7 textsize 18
+                private xywh {500 623 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 7 textsize 18
               }
               Fl_Choice drp_MorphOp_Shape41 {
                 label {Morphology Shape}
                 callback drawNewImage open
-                private xywh {240 575 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {236 561 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Shape41->menu(menu_drp_MorphOp_Shape);}
                 code2 {drp_MorphOp_Shape41->value(0);}
               } {}
               Fl_Choice drp_MorphOp_Op41 {
                 label {Morphology Operation}
                 callback drawNewImage open
-                private xywh {464 575 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {460 561 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Op41->menu(menu_drp_MorphOp_Op);}
                 code2 {drp_MorphOp_Op41->value(2);}
               } {}
@@ -532,43 +532,43 @@ Fl::background(238, 240, 241);} {}
             Fl_Check_Button chk_MorphOp_enable41 {
               label {Morphology Operation 1} user_data_type {void*}
               callback switchVisibility
-              private xywh {236 636 256 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {232 622 256 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {2. First Morphology operation}
-            xywh {32 543 190 54} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 529 190 54} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblMorphOp41 {
             label {0 ms}
-            private xywh {119 653 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {115 639 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {
-          xywh {32 691 656 135} labelsize 18
+          xywh {28 677 656 135} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 691 446 135} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 677 446 135} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {232 691 431 135} labelsize 18
+              xywh {228 677 431 135} labelsize 18
             } {
               Fl_Value_Slider sld_MorphOp_ksize42 {
                 label {Kernel Size:}
                 callback drawNewImage
-                private xywh {501 785 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {497 771 162 31} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
               Fl_Choice drp_MorphOp_Shape42 {
                 label {Morphology Shape}
                 callback drawNewImage open
-                private xywh {237 723 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {233 709 209 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Shape42->menu(menu_drp_MorphOp_Shape);}
                 code2 {drp_MorphOp_Shape42->value(0);}
               } {}
               Fl_Choice drp_MorphOp_Op42 {
                 label {Morphology Operation}
                 callback drawNewImage open
-                private xywh {461 723 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {457 709 202 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_MorphOp_Op42->menu(menu_drp_MorphOp_Op);}
                 code2 {drp_MorphOp_Op42->value(3);}
               } {}
@@ -576,134 +576,134 @@ Fl::background(238, 240, 241);} {}
             Fl_Check_Button chk_MorphOp_enable42 {
               label {Morphology Operation 2} user_data_type {void*}
               callback switchVisibility
-              private xywh {235 784 259 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {231 770 259 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
             label {3. Second Morphology operation}
-            xywh {32 691 190 55} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            xywh {28 677 190 55} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblMorphOp42 {
             label {0 ms}
-            private xywh {121 796 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {117 782 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {32 836 656 110} labelsize 18
+          xywh {28 822 656 110} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {232 836 448 110} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {228 822 448 110} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {232 840 436 66} labelsize 18
+              xywh {228 826 436 66} labelsize 18
             } {
               Fl_Value_Slider sld_postMedian_ksize4 {
                 label {Kernel Size:}
                 callback sliderOddVal
-                private xywh {240 868 426 30} type Horizontal box PLASTIC_DOWN_BOX color 47 selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
+                private xywh {236 854 426 30} type Horizontal box PLASTIC_DOWN_BOX color 47 selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 1 maximum 50 step 1 value 3 textsize 18
               }
             }
             Fl_Check_Button chk_postMedian_enable4 {
               label {Median Blur (Post)} user_data_type {void*}
               callback switchVisibility
-              private xywh {240 908 203 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {236 894 203 33} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
-            label {4. Final bluring}
-            xywh {32 836 190 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            label {4. Post bluring}
+            xywh {28 822 190 25} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblPostMedian4 {
             label {0 ms}
-            private xywh {128 916 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {124 902 99 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
         Fl_Group {} {open
-          xywh {32 1215 658 95} labelsize 18
+          xywh {28 937 651 261} labelsize 18
         } {
           Fl_Group {} {open
-            private xywh {234 1225 438 75} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
-          } {
-            Fl_Group {} {
-              xywh {252 1225 15 75} labelsize 18
-            } {}
-            Fl_Check_Button chk_identification_4 {
-              label Identification user_data_type {void*}
-              callback switchVisibility
-              private xywh {238 1255 157 35} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
-            }
-          }
-          Fl_Box {} {
-            label {6. Identification}
-            xywh {34 1225 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
-          }
-          Fl_Box lblIdentification_4 {
-            label {0 ms}
-            private xywh {129 1270 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
-          }
-        }
-        Fl_Group {} {open
-          xywh {32 951 651 261} labelsize 18
-        } {
-          Fl_Group {} {open
-            private xywh {234 951 449 254} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+            private xywh {230 937 449 254} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
           } {
             Fl_Group {} {open
-              xywh {244 961 436 191} labelsize 18
+              xywh {240 947 436 191} labelsize 18
             } {
               Fl_Choice drp_AHThresh_ThrshType4 {
                 label {Threshold Type}
                 callback drawNewImage open
-                private xywh {245 983 165 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {241 969 165 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_AHThresh_ThrshType4->menu(menu_drp_ThreshTypes);}
                 code2 {drp_AHThresh_ThrshType4->value(0);}
               } {}
               Fl_Choice drp_AHThresh_AThrshType4 {
                 label {Adaptive Threshold Type}
                 callback drawNewImage open
-                private xywh {420 983 250 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
+                private xywh {416 969 250 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 textsize 18
                 code1 {drp_AHThresh_AThrshType4->menu(menu_drp_AdaptThreshTypes);}
                 code2 {drp_AHThresh_AThrshType4->value(0);}
               } {}
               Fl_Value_Slider sld_AHThresh_BlkSz4 {
                 label {Block Size}
                 callback sliderOddVal
-                private xywh {244 1045 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 3 maximum 450 step 1 value 131 textsize 18
+                private xywh {240 1031 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum 3 maximum 450 step 1 value 131 textsize 18
               }
               Fl_Value_Slider sld_AHThresh_C4 {
                 label {Constant c}
                 callback drawNewImage
-                private xywh {244 1107 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum -150 maximum 150 step 1 textsize 18
+                private xywh {240 1093 426 30} type Horizontal box PLASTIC_DOWN_BOX selection_color 14 labelfont 2 labelsize 18 align 5 when 4 minimum -150 maximum 150 step 1 textsize 18
               }
             }
             Fl_Check_Button chk_AHThresh_enable4 {
               label {Adaptive Hue Isolation} user_data_type {void*}
               callback switchVisibility
-              private xywh {430 1162 240 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+              private xywh {426 1148 240 32} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
             }
           }
           Fl_Box {} {
-            label {2. Adaptive Hue Thresholding }
-            xywh {34 951 190 48} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+            label {5. Adaptive Hue Thresholding }
+            xywh {30 937 190 48} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
           }
           Fl_Box lblAHThresh4 {
             label {0 ms}
-            private xywh {124 1164 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+            private xywh {120 1150 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
+          }
+        }
+        Fl_Group {} {open
+          xywh {28 1201 658 95} labelsize 18
+        } {
+          Fl_Group {} {open
+            private xywh {230 1211 438 75} box PLASTIC_DOWN_BOX color 44 labelsize 24 align 6
+          } {
+            Fl_Group {} {
+              xywh {248 1211 15 75} labelsize 18
+            } {}
+            Fl_Check_Button chk_identification_4 {
+              label Identification user_data_type {void*}
+              callback switchVisibility
+              private xywh {234 1241 157 35} box PLASTIC_DOWN_BOX down_box PLASTIC_DOWN_BOX value 1 labelfont 2 labelsize 20
+            }
+          }
+          Fl_Box {} {
+            label {6. Identification}
+            xywh {30 1211 190 30} box PLASTIC_DOWN_FRAME color 45 labelfont 3 labelsize 16 align 148
+          }
+          Fl_Box lblIdentification_4 {
+            label {0 ms}
+            private xywh {125 1256 100 30} box PLASTIC_ROUND_DOWN_BOX color 45 labelfont 3 labelsize 16 align 148
           }
         }
       }
     }
     Fl_Group {} {
-      private xywh {20 14 680 364} box PLASTIC_DOWN_BOX color 46
+      private xywh {16 14 694 364} box PLASTIC_DOWN_BOX color 46
     } {
       Fl_Tree dirTree {
         callback loadImgFromTree
-        private xywh {40 37 330 219} box PLASTIC_DOWN_BOX labelsize 20 when 4
+        private xywh {36 37 337 219} box PLASTIC_DOWN_BOX labelsize 20 when 4
         code0 {dirTree->root_label("Loaded Images");}
       }
       Fl_Group {} {
         label {Time Statistics}
-        xywh {380 230 310 128} box PLASTIC_DOWN_FRAME labelsize 18 align 17
+        xywh {383 230 317 128} box PLASTIC_DOWN_FRAME labelsize 18 align 17
       } {
         Fl_Box lblTotTime {
           label {0 ms | 0 s | 0 fps}
@@ -716,7 +716,7 @@ Fl::background(238, 240, 241);} {}
       }
       Fl_Group {} {
         label {Change Callback on:} open
-        xywh {380 147 310 73} box PLASTIC_DOWN_FRAME labelsize 18 align 149
+        xywh {383 147 317 73} box PLASTIC_DOWN_FRAME labelsize 18 align 149
       } {
         Fl_Light_Button {} {
           label Release
@@ -726,24 +726,24 @@ Fl::background(238, 240, 241);} {}
         }
       }
       Fl_Group {} {open
-        xywh {555 37 135 100} box PLASTIC_DOWN_FRAME labelsize 18
+        xywh {562 37 138 100} box PLASTIC_DOWN_FRAME labelsize 18
       } {
         Fl_Button {} {
           label Help
-          xywh {565 47 115 35} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
+          xywh {573 47 115 35} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
         }
         Fl_Button {} {
           label Credits
           callback credits
-          xywh {565 92 115 35} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
+          xywh {573 92 115 35} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX labelsize 18
         }
       }
       Fl_Box {} {
         label {Simple Grape's Stem Approximator}
-        xywh {380 37 165 100} box PLASTIC_DOWN_FRAME labelfont 3 labelsize 22 align 148
+        xywh {383 37 169 100} box PLASTIC_DOWN_FRAME labelfont 3 labelsize 22 align 148
       }
       Fl_Group {} {open
-        xywh {40 266 330 92} box PLASTIC_DOWN_FRAME labelsize 18
+        xywh {36 266 337 92} box PLASTIC_DOWN_FRAME labelsize 18
       } {
         Fl_Button btn_loadImg {
           label {Load New Image}

@@ -180,7 +180,7 @@ static long long calcFuncTime(Timer t, void (*func)()) {
     return a;
 }
 
-static void fillTimer(Fl_Box* box, Timer t = stepTimer, /*uchar subDivT = 3,uchar numCount = 6,*/ std::string concStr = " ms") {
+static void fillTimer(Fl_Box* box, Timer t = stepTimer, std::string concStr = " ms") {
     auto a = stepTimer.getDuration();
     totTimer += a;
     auto a1 = std::to_string((float)a / 1000).substr(0, 6);
@@ -239,13 +239,13 @@ static void calc_AdaptHueThreshImg(Fl_Value_Slider* sldBlkSz, Fl_Value_Slider* s
     cv::Mat channels[3], hsvImage;
 
     //Convert to HSV
-    cv::cvtColor(*outImg, hsvImage, cv::COLOR_BGR2HSV);
+    cv::cvtColor(*outImg, hsvImage, cv::COLOR_BGR2HSV_FULL);
     //Get Hue channel
-    cv::split(hsvImage, channels);
+    cv::split(hsvImage, channels); hsvImage = channels[0];
 
-    cv::adaptiveThreshold(channels[0], channels[0], 255, drpAdaptThresh->value(), drpThreshType->value(), sldBlkSz->value(), sldC->value());
-    cv::cvtColor(channels[0], channels[0], cv::COLOR_GRAY2BGR);
-    cv::bitwise_and(channels[0], *outImg, *outImg);
+    cv::adaptiveThreshold(hsvImage, hsvImage, 255, drpAdaptThresh->value(), drpThreshType->value(), sldBlkSz->value(), sldC->value());
+    cv::cvtColor(hsvImage, hsvImage, cv::COLOR_GRAY2BGR);
+    cv::bitwise_and(hsvImage, *outImg, *outImg);
 }
 
 static void calc_BilatFiltr(Fl_Value_Slider* sld_d, Fl_Value_Slider* sld_sc, Fl_Value_Slider* sld_ss) {
@@ -351,7 +351,28 @@ static void drawImage2(Fl_Box* imgFrame) {
     window->redraw();
 }
 
+std::string getTabName(ActiveTab tab) {
+    switch (tab)
+    {
+    case Tab1:
+        return "Ensebmle 1";
+    case Tab2:
+        return "Ensebmle 2";
+    default:
+        break;
+    }
+}
+
+static bool isImgLoaded() {
+    return (outImg->rows > 0 && outImg->cols > 0);
+}
+
+#pragma endregion
+
+#pragma region CallBackFunctions
+
 static void changeCBType(bool onrelease) {
+    auto cbType = onrelease ? FL_WHEN_RELEASE : FL_WHEN_CHANGED;
     Fl_Value_Slider* sldArr[] = {
         sld_preMedian_ksize, sld_postMedian_ksize,
         sld_MorphOp_ksize2, sld_MorphOp_ksize1,
@@ -370,37 +391,13 @@ static void changeCBType(bool onrelease) {
         sld_AHThresh_BlkSz4, sld_AHThresh_C4,
     };
     uchar sz = sizeof(sldArr) / 4;
-    for (size_t i = 0; i < sz; i++)
-    {
-        auto cbType = onrelease ? FL_WHEN_RELEASE : FL_WHEN_CHANGED;
-        sldArr[i]->when(cbType);
-    }
+    for (size_t i = 0; i < sz; i++) sldArr[i]->when(cbType);
 }
 
 static void toggleCB(Fl_Button* btn) {
     bool a = btn->value();
     changeCBType(a);
 }
-
-std::string getTabName(ActiveTab tab) {
-    switch (tab)
-    {
-        case Tab1:
-            return "Ensebmle 1";
-        case Tab2:
-            return "Ensebmle 2";
-        default:
-            break;
-    }
-}
-
-static bool isImgLoaded() {
-    return (outImg->rows > 0 && outImg->cols > 0);
-}
-
-#pragma endregion
-
-#pragma region CallBackFunctions
 
 static void caseCalc() {
     //RENEW IMG DATA WITH INITIAL
@@ -409,40 +406,40 @@ static void caseCalc() {
 
     switch (currentTab)
     {
-        case Tab1:
-            if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
-            if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
+    case Tab1:
+        if (chk_preBilateral_enable->value()) { stepTimer.start(); calc_BilatFiltr(sld_preBilateral_d, sld_preBilateral_sCol, sld_preBilateral_sSpace); stepTimer.end(); fillTimer(lblPreBilat); }
+        if (chk_threshImg_enable_2->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_2, sld_thrsh_high_2); stepTimer.end(); fillTimer(lblthreshImg_2); }
 
-            if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_2); }
-            break;
-        case Tab2:
-            if (chk_preMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize); stepTimer.end(); fillTimer(lblPreMedian1); }
-            if (chk_MorphOp_enable1->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1); stepTimer.end(); fillTimer(lblMorphOp1); }
-            if (chk_MorphOp_enable2->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2); stepTimer.end(); fillTimer(lblMorphOp2); }
-            if (chk_postMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize); stepTimer.end(); fillTimer(lblPostMedian); }
-            if (chk_threshImg_enable_1->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_1, sld_thrsh_high_1); stepTimer.end(); fillTimer(lblthreshImg_1); }
+        if (chk_identification_2->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_2); }
+        break;
+    case Tab2:
+        if (chk_preMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize); stepTimer.end(); fillTimer(lblPreMedian1); }
+        if (chk_MorphOp_enable1->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize1, drp_MorphOp_Shape1, drp_MorphOp_Op1); stepTimer.end(); fillTimer(lblMorphOp1); }
+        if (chk_MorphOp_enable2->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize2, drp_MorphOp_Shape2, drp_MorphOp_Op2); stepTimer.end(); fillTimer(lblMorphOp2); }
+        if (chk_postMedian_enable->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize); stepTimer.end(); fillTimer(lblPostMedian); }
+        if (chk_threshImg_enable_1->value()) { stepTimer.start(); calc_HueRangeImg(sld_thrsh_low_1, sld_thrsh_high_1); stepTimer.end(); fillTimer(lblthreshImg_1); }
 
-            if (chk_identification_1->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
+        if (chk_identification_1->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_1); }
 
-            break;
+        break;
 
-        case Tab3:
-            if (chk_preMedian_enable2->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize2); stepTimer.end(); fillTimer(lblPreMedian2); }
-            if (chk_AHThresh_enable->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz, sld_AHThresh_C, drp_AHThresh_AThrshType, drp_AHThresh_ThrshType); stepTimer.end(); fillTimer(lblAHThresh); }
+    case Tab3:
+        if (chk_preMedian_enable2->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize2); stepTimer.end(); fillTimer(lblPreMedian2); }
+        if (chk_AHThresh_enable->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz, sld_AHThresh_C, drp_AHThresh_AThrshType, drp_AHThresh_ThrshType); stepTimer.end(); fillTimer(lblAHThresh); }
 
-            if (chk_identification_3->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_3); }
+        if (chk_identification_3->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_3); }
 
-            break;
-        case Tab4:
-            if (chk_preMedian_enable4->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize4); stepTimer.end(); fillTimer(lblPreMedian4); }
-            if (chk_MorphOp_enable41->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize41, drp_MorphOp_Shape41, drp_MorphOp_Op41); stepTimer.end(); fillTimer(lblMorphOp41); }
-            if (chk_MorphOp_enable42->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize42, drp_MorphOp_Shape42, drp_MorphOp_Op42); stepTimer.end(); fillTimer(lblMorphOp42); }
-            if (chk_postMedian_enable4->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize4); stepTimer.end(); fillTimer(lblPostMedian4); }
-            if (chk_AHThresh_enable4->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz4, sld_AHThresh_C4, drp_AHThresh_AThrshType4, drp_AHThresh_ThrshType4); stepTimer.end(); fillTimer(lblAHThresh4); }
+        break;
+    case Tab4:
+        if (chk_preMedian_enable4->value()) { stepTimer.start(); calc_MedianFiltr(sld_preMedian_ksize4); stepTimer.end(); fillTimer(lblPreMedian4); }
+        if (chk_MorphOp_enable41->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize41, drp_MorphOp_Shape41, drp_MorphOp_Op41); stepTimer.end(); fillTimer(lblMorphOp41); }
+        if (chk_MorphOp_enable42->value()) { stepTimer.start(); calc_StructuralOp(sld_MorphOp_ksize42, drp_MorphOp_Shape42, drp_MorphOp_Op42); stepTimer.end(); fillTimer(lblMorphOp42); }
+        if (chk_postMedian_enable4->value()) { stepTimer.start(); calc_MedianFiltr(sld_postMedian_ksize4); stepTimer.end(); fillTimer(lblPostMedian4); }
+        if (chk_AHThresh_enable4->value()) { stepTimer.start(); calc_AdaptHueThreshImg(sld_AHThresh_BlkSz4, sld_AHThresh_C4, drp_AHThresh_AThrshType4, drp_AHThresh_ThrshType4); stepTimer.end(); fillTimer(lblAHThresh4); }
 
-            if (chk_identification_4->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_4); }
+        if (chk_identification_4->value()) { stepTimer.start(); calc_identifyAndDraw(); stepTimer.end(); fillTimer(lblIdentification_4); }
 
-            break;
+        break;
 
     }
 
@@ -594,18 +591,14 @@ static void removeFileEntry() {
 static void loadImgFromTree(Fl_Widget* w, void* data) {
     auto tree = (Fl_Tree*)w;
     switch (tree->callback_reason()) {
-        case FL_TREE_REASON_SELECTED:
-            auto item = (Fl_Tree_Item*)tree->callback_item(); // get selected item
-            bool isRoot = item == dirTree->root();
-            if (!isRoot && item->parent()->parent() == dirTree->root()) {
-                FileName = ((std::string*)item->user_data())[0];
-                drawInitialImage();
-            }
+    case FL_TREE_REASON_SELECTED:
+        auto item = (Fl_Tree_Item*)tree->callback_item(); // get selected item
+        bool isRoot = item == dirTree->root();
+        if (!isRoot && item->parent()->parent() == dirTree->root()) {
+            FileName = ((std::string*)item->user_data())[0];
+            drawInitialImage();
+        }
     }
-    /*if (isDirTreeFocused()) {
-
-
-    }*/
 }
 
 static void chooseFile() {
@@ -622,16 +615,16 @@ static void chooseFile() {
 
     // Show native chooser
     switch (fnfc.show()) {
-        case -1: printf("ERROR: %s\n", fnfc.errmsg());    break;  // ERROR
-        case  1: printf("CANCEL\n");                      break;  // CANCEL
-        default:
-            printf("PICKED: %s\n", fnfc.filename());
-            FileName = fnfc.filename();
-            if (dirStringList->canBeAddedDistinct(FileName)) {
-                addTreeItem();
-                drawInitialImage();
-            }
-            break;  // FILE CHOSEN
+    case -1: printf("ERROR: %s\n", fnfc.errmsg());    break;  // ERROR
+    case  1: printf("CANCEL\n");                      break;  // CANCEL
+    default:
+        printf("PICKED: %s\n", fnfc.filename());
+        FileName = fnfc.filename();
+        if (dirStringList->canBeAddedDistinct(FileName)) {
+            addTreeItem();
+            drawInitialImage();
+        }
+        break;  // FILE CHOSEN
     }
 
     loadingInterval();
@@ -650,25 +643,25 @@ static void saveImg() {
 
     // Show native chooser
     switch (fnfc.show()) {
-        case -1: printf("ERROR: %s\n", fnfc.errmsg());    break;  // ERROR
-        case  1: printf("CANCEL\n");                      break;  // CANCEL
-        default:
-            printf("PICKED: %s\n", fnfc.filename());
-            FileName = fnfc.filename();
-            uchar a = FileName.find('.');
-            if (a > FileName.length()) { FileName = FileName + ".jpeg"; }
+    case -1: printf("ERROR: %s\n", fnfc.errmsg());    break;  // ERROR
+    case  1: printf("CANCEL\n");                      break;  // CANCEL
+    default:
+        printf("PICKED: %s\n", fnfc.filename());
+        FileName = fnfc.filename();
+        uchar a = FileName.find('.');
+        if (a > FileName.length()) { FileName = FileName + ".jpeg"; }
 
-            std::vector<int> params;
-            params.push_back(cv::IMWRITE_JPEG_QUALITY); params.push_back(85);
-            params.push_back(cv::IMWRITE_JPEG_OPTIMIZE); params.push_back(1);
+        std::vector<int> params;
+        params.push_back(cv::IMWRITE_JPEG_QUALITY); params.push_back(85);
+        params.push_back(cv::IMWRITE_JPEG_OPTIMIZE); params.push_back(1);
 
-            try {
-                cv::imwrite(FileName, *outImg, params);
-                auto filename = std::string(dirTree->first_selected_item()->label());
-                fl_alert(std::string("File Saved as: " + FileName).c_str());
-            }
-            catch (const std::exception&) { Fl::error("File Save Error, Check file extension"); }
-            break;  // FILE CHOSEN
+        try {
+            cv::imwrite(FileName, *outImg, params);
+            auto filename = std::string(dirTree->first_selected_item()->label());
+            fl_alert(std::string("File Saved as: " + FileName).c_str());
+        }
+        catch (const std::exception&) { Fl::error("File Save Error, Check file extension"); }
+        break;  // FILE CHOSEN
     }
 
     loadingInterval();
